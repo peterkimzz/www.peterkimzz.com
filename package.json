@@ -1,0 +1,30 @@
+{
+  "name": "www-peterkimzz-com",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.901.0",
+    "@nuxt/content": "^3.10.0",
+    "@nuxt/eslint": "1.12.1",
+    "@nuxt/hints": "1.0.0-alpha.5",
+    "@nuxt/image": "2.0.0",
+    "@nuxt/scripts": "0.13.2",
+    "@nuxt/test-utils": "3.21.0",
+    "@nuxt/ui": "4.3.0",
+    "@tailwindcss/typography": "^0.5.18",
+    "@unhead/vue": "^2.0.3",
+    "better-sqlite3": "^12.5.0",
+    "eslint": "^9.0.0",
+    "gray-matter": "^4.0.3",
+    "medium-zoom": "^1.1.0",
+    "nuxt": "^4.2.2",
+    "typescript": "^5.6.3",
+    "zod": "^4.1.12"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "compatibility_date": "2025-02-20",
+  "compatibility_flags": ["nodejs_compat"],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "blog-content",
+      "database_id": "replace-with-your-d1-id"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "BLOG_IMAGES",
+      "bucket_name": "replace-with-your-r2-bucket"
+    }
+  ]
+}
