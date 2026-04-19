@@ -3,13 +3,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "nuxt build",
+    "build": "nuxt generate",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.901.0",
     "@nuxt/content": "^3.10.0",
     "@nuxt/eslint": "1.12.1",
     "@nuxt/hints": "1.0.0-alpha.5",
@@ -21,7 +20,6 @@
     "@unhead/vue": "^2.0.3",
     "better-sqlite3": "^12.5.0",
     "eslint": "^9.0.0",
-    "gray-matter": "^4.0.3",
     "medium-zoom": "^1.1.0",
     "nuxt": "^4.2.2",
     "typescript": "^5.6.3",

@@ -11,9 +11,6 @@
       </NuxtLink>
 
       <nav class="flex items-center gap-4 text-sm font-semibold text-[var(--color-ink-700)] sm:gap-6">
-        <NuxtLink to="/admin" class="hover:text-[var(--color-ink-900)]">
-          Admin
-        </NuxtLink>
         <NuxtLink to="https://resume.peterkimzz.com" target="_blank" class="hover:text-[var(--color-ink-900)]">
           Resume
         </NuxtLink>
