@@ -13,12 +13,22 @@
     "lint:fix": "nuxt prepare && eslint . --fix",
     "new:post": "node scripts/new-post.mjs",
     "paste:image": "node scripts/paste-image.mjs",
+    "prepare": "husky",
     "preview": "nuxt preview",
     "preview:static": "serve .output/public -l 4173 --no-clipboard",
     "test:e2e": "yarn generate && playwright test",
     "test:e2e:ci": "playwright test",
     "test:e2e:headed": "yarn generate && playwright test --headed",
     "typecheck": "nuxt prepare && nuxi typecheck"
+  },
+  "lint-staged": {
+    "*.{js,ts,vue,mjs}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,yml,yaml}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@nuxt/content": "^3.10.0",
@@ -42,6 +52,8 @@
     "@playwright/test": "^1.59.1",
     "@types/node": "^25.6.0",
     "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
     "prettier": "^3.8.3",
     "serve": "^14.2.6",
     "vue-tsc": "^3.2.7"
