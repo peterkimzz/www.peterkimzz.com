@@ -32,6 +32,9 @@ jobs:
       - name: Run Prettier check
         run: yarn format:check
 
+      - name: Run TypeScript check
+        run: yarn typecheck
+
       - name: Cache Playwright browsers
         uses: actions/cache@v4
         with:

@@ -18,10 +18,12 @@ if (!article.value || !article.value.published) {
   });
 }
 
+const publishedArticle = article.value;
+
 const { data: related } = await useAsyncData(`related:${articlePath}`, () => {
   return queryCollection("content")
     .where("published", "=", true)
-    .where("category", "=", article.value?.category || "")
+    .where("category", "=", publishedArticle.category || "")
     .where("path", "<>", articlePath)
     .order("created", "DESC")
     .select("path", "title", "description", "created", "category", "rawbody")
@@ -29,13 +31,13 @@ const { data: related } = await useAsyncData(`related:${articlePath}`, () => {
 });
 
 useSeoMeta({
-  title: article.value.title,
+  title: publishedArticle.title,
   description:
-    article.value.description || excerptFromRaw(article.value.rawbody),
-  ogTitle: article.value.title,
+    publishedArticle.description || excerptFromRaw(publishedArticle.rawbody),
+  ogTitle: publishedArticle.title,
   ogDescription:
-    article.value.description || excerptFromRaw(article.value.rawbody),
-  ogImage: article.value.image,
+    publishedArticle.description || excerptFromRaw(publishedArticle.rawbody),
+  ogImage: publishedArticle.image,
 });
 </script>
 
@@ -51,14 +53,14 @@ useSeoMeta({
           <h1
             class="mx-auto max-w-md pb-3 text-3xl font-bold leading-tight tracking-[-0.01em] text-black"
           >
-            {{ article.title }}
+            {{ publishedArticle.title }}
           </h1>
 
-          <ArticleDate :value="article.created" class="text-lg" />
+          <ArticleDate :value="publishedArticle.created" class="text-lg" />
         </header>
 
         <ContentRenderer
-          :value="article"
+          :value="publishedArticle"
           class="article-prose prose md:prose-lg max-w-full prose-headings:tracking-tight prose-p:text-gray-600 prose-p:font-medium prose-a:font-semibold prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-strong:font-bold prose-blockquote:border-l-4 prose-blockquote:border-gray-200 prose-blockquote:text-gray-600"
         />
 
@@ -69,13 +71,13 @@ useSeoMeta({
         class="sticky top-[53px] mx-auto h-fit w-full max-w-prose py-2 lg:py-0"
       >
         <section
-          v-if="article.body?.toc?.links?.length"
+          v-if="publishedArticle.body?.toc?.links?.length"
           class="hidden lg:block"
         >
           <h4 class="pb-0.5 text-sm font-semibold text-gray-600">목차</h4>
           <ul class="space-y-1">
             <li
-              v-for="link in article.body.toc.links"
+              v-for="link in publishedArticle.body.toc.links"
               :key="link.id"
               class="font-medium text-gray-900"
             >

@@ -1,3 +1,8 @@
+import process from "node:process";
+
+const siteUrl =
+  process.env.NUXT_PUBLIC_SITE_URL || "https://www.peterkimzz.com";
+
 export default defineNuxtConfig({
   compatibilityDate: "2025-02-20",
   devtools: { enabled: true },
@@ -19,7 +24,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "https://www.peterkimzz.com",
+      siteUrl,
     },
   },
   content: {
@@ -33,7 +38,7 @@ export default defineNuxtConfig({
     },
   },
   site: {
-    url: process.env.NUXT_PUBLIC_SITE_URL || "https://www.peterkimzz.com",
+    url: siteUrl,
     name: "peterkimzz",
   },
   sitemap: {
