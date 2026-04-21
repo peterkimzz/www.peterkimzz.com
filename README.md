@@ -2,6 +2,8 @@
 
 Nuxt 4 기반 개인 블로그입니다.
 
+Agent rules: [`AGENTS.md`](./AGENTS.md)
+
 ## Stack
 
 - `Nuxt 4`
