@@ -23,7 +23,7 @@ useHead({
 </script>
 
 <template>
-  <div class="mt-12 rounded-[28px] border border-black/5 bg-white/70 p-4 sm:p-6">
+  <div class="mt-12 border-t pt-8">
     <div class="giscus" />
   </div>
 </template>

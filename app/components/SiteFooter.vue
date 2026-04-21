@@ -1,16 +1,16 @@
 <template>
-  <footer class="mt-24 border-t border-black/5 pb-10 pt-6">
-    <div class="mx-auto flex max-w-6xl flex-col gap-4 px-5 text-sm text-[var(--color-ink-700)] sm:flex-row sm:items-center sm:justify-between sm:px-8">
-      <p>
-        Build with markdown, Git history, and a stubborn preference for free infrastructure.
-      </p>
+  <footer class="border-t py-3">
+    <div class="mx-auto flex max-w-6xl flex-col-reverse items-center justify-between gap-2 px-5 sm:flex-row sm:px-8">
+      <span class="text-xs text-gray-500">
+        &copy; {{ new Date().getFullYear() }} Peter Kim. All Right Reserved.
+      </span>
 
-      <div class="flex items-center gap-4">
-        <NuxtLink to="mailto:peterkimzz69@gmail.com" class="hover:text-[var(--color-ink-900)]">
-          Email
+      <div class="flex items-center gap-2.5 text-sm">
+        <NuxtLink to="mailto:peterkimzz69@gmail.com" class="text-inherit no-underline hover:underline">
+          이메일 보내기
         </NuxtLink>
-        <NuxtLink to="https://dub.sh/peter-30m" target="_blank" class="hover:text-[var(--color-ink-900)]">
-          Meeting
+        <NuxtLink to="https://dub.sh/peter-30m" target="_blank" class="text-inherit no-underline hover:underline">
+          화상미팅 요청하기
         </NuxtLink>
       </div>
     </div>

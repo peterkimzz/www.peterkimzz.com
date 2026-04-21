@@ -40,73 +40,63 @@ useSeoMeta({
 </script>
 
 <template>
-  <div class="mx-auto max-w-6xl px-5 pb-16 pt-8 sm:px-8">
-    <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_280px]">
-      <article class="shell-panel rounded-[36px] px-5 py-8 sm:px-8 sm:py-10">
-        <div class="mx-auto max-w-3xl">
-          <NuxtLink
-            to="/"
-            class="text-sm font-semibold uppercase tracking-[0.22em] text-[var(--color-accent-700)] hover:text-[var(--color-accent-600)]"
-          >
-            Back to archive
-          </NuxtLink>
+  <div class="mx-auto max-w-6xl px-5 py-10 sm:px-8">
+    <div class="flex h-full flex-col gap-10 transition-all lg:flex-row lg:gap-10">
+      <main class="mx-auto w-full max-w-prose lg:flex-1 lg:overflow-y-scroll lg:pr-4">
+        <header class="pb-10 text-center">
+          <h1 class="mx-auto max-w-md pb-3 text-3xl font-bold leading-tight tracking-[-0.01em] text-black">
+            {{ article.title }}
+          </h1>
 
-          <header class="mt-6 border-b border-black/5 pb-8">
-            <p class="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--color-accent-700)]">
-              {{ article.category || 'essay' }}
-            </p>
-            <h1 class="mt-3 font-serif text-4xl font-bold leading-tight tracking-[-0.04em] text-[var(--color-ink-900)] sm:text-6xl">
-              {{ article.title }}
-            </h1>
-            <p v-if="article.description" class="mt-4 max-w-2xl text-base leading-7 text-[var(--color-ink-700)]">
-              {{ article.description }}
-            </p>
-            <div class="mt-6">
-              <ArticleDate :value="article.created" />
-            </div>
-          </header>
+          <ArticleDate :value="article.created" class="text-lg" />
+        </header>
 
-          <ContentRenderer
-            :value="article"
-            class="article-prose prose prose-lg mt-10 max-w-none prose-a:text-[var(--color-accent-700)] prose-a:no-underline hover:prose-a:text-[var(--color-accent-600)] prose-blockquote:border-l-[3px] prose-blockquote:border-[var(--color-accent-500)] prose-blockquote:text-[var(--color-ink-700)] prose-strong:text-[var(--color-ink-900)]"
-          />
+        <ContentRenderer
+          :value="article"
+          class="article-prose prose md:prose-lg max-w-full prose-headings:tracking-tight prose-p:text-gray-600 prose-p:font-medium prose-a:font-semibold prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-strong:font-bold prose-blockquote:border-l-4 prose-blockquote:border-gray-200 prose-blockquote:text-gray-600"
+        />
 
-          <ArticleComment />
-        </div>
-      </article>
+        <ArticleComment />
+      </main>
 
-      <aside class="space-y-5 lg:sticky lg:top-24 lg:h-fit">
-        <section v-if="article.body?.toc?.links?.length" class="shell-panel rounded-[28px] p-5">
-          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-accent-700)]">
-            Table of contents
-          </p>
-          <ul class="mt-4 space-y-3">
-            <li v-for="link in article.body.toc.links" :key="link.id">
-              <NuxtLink :to="`#${link.id}`" class="text-sm leading-6 text-[var(--color-ink-700)] hover:text-[var(--color-ink-900)]">
+      <aside class="sticky top-[53px] mx-auto h-fit w-full max-w-prose py-2 lg:py-0">
+        <section v-if="article.body?.toc?.links?.length" class="hidden lg:block">
+          <h4 class="pb-0.5 text-sm font-semibold text-gray-600">
+            목차
+          </h4>
+          <ul class="space-y-1">
+            <li v-for="link in article.body.toc.links" :key="link.id" class="font-medium text-gray-900">
+              <NuxtLink :to="`#${link.id}`" class="text-inherit no-underline hover:underline">
                 {{ link.text }}
-              </NuxtLink>
-            </li>
-          </ul>
-        </section>
-
-        <section class="shell-panel rounded-[28px] p-5">
-          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-accent-700)]">
-            More in {{ article.category || 'this section' }}
-          </p>
-          <ul class="mt-4 space-y-4">
-            <li v-for="item in related?.slice(0, 4)" :key="item.path">
-              <NuxtLink :to="item.path" class="block hover:no-underline">
-                <p class="font-serif text-lg font-semibold tracking-[-0.02em] text-[var(--color-ink-900)]">
-                  {{ item.title }}
-                </p>
-                <p class="mt-1 text-sm leading-6 text-[var(--color-ink-700)]">
-                  {{ item.description || excerptFromRaw(item.rawbody, 68) }}
-                </p>
               </NuxtLink>
             </li>
           </ul>
         </section>
       </aside>
     </div>
+
+    <section class="py-10">
+      <h3 class="text-2xl font-bold text-black">
+        같은 카테고리의 다른 글
+      </h3>
+
+      <div class="py-10">
+        <div v-if="!related?.length">
+          다른 글이 없습니다.
+        </div>
+
+        <ul v-else class="grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
+          <ArticleCard
+            v-for="item in related"
+            :key="item.path"
+            :path="item.path"
+            :title="item.title || 'Untitled'"
+            :description="item.description || excerptFromRaw(item.rawbody, 68)"
+            :created="item.created"
+            :category="item.category"
+          />
+        </ul>
+      </div>
+    </section>
   </div>
 </template>

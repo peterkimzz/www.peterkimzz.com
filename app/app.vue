@@ -16,7 +16,7 @@ useHead({
     { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
     {
       rel: 'stylesheet',
-      href: 'https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,700&family=JetBrains+Mono:wght@400;600&family=Pretendard:wght@400;500;600;700;800&display=swap',
+      href: 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Pretendard:wght@400;500;600;700;800&display=swap',
     },
     {
       rel: 'icon',

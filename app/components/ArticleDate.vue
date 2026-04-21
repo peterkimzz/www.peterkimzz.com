@@ -17,7 +17,7 @@ const formatted = computed(() => {
 </script>
 
 <template>
-  <time :datetime="value" class="text-sm text-[var(--color-ink-700)]">
+  <time :datetime="value" class="text-sm font-medium text-gray-900">
     {{ formatted }}
   </time>
 </template>

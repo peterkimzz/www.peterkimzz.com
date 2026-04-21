@@ -1,20 +1,20 @@
 <template>
-  <header class="sticky top-0 z-50 border-b border-black/5 bg-[rgb(252_251_248_/_0.84)] backdrop-blur-xl">
-    <div class="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 sm:px-8">
-      <NuxtLink to="/" class="group inline-flex items-end gap-2">
-        <span class="font-serif text-2xl font-bold tracking-[-0.04em] text-[var(--color-ink-900)]">
+  <header class="sticky top-0 z-50 border-b bg-white">
+    <div class="mx-auto flex max-w-6xl items-center justify-between px-5 sm:px-8">
+      <NuxtLink to="/" class="text-xl font-bold italic tracking-wide text-gray-900 no-underline hover:no-underline">
+        <span>
           PETERKIM
         </span>
-        <span class="pb-0.5 text-sm font-semibold tracking-[0.28em] text-[var(--color-accent-600)] transition group-hover:translate-x-0.5">
+        <span class="text-gray-500">
           ZZ
         </span>
       </NuxtLink>
 
-      <nav class="flex items-center gap-4 text-sm font-semibold text-[var(--color-ink-700)] sm:gap-6">
-        <NuxtLink to="https://resume.peterkimzz.com" target="_blank" class="hover:text-[var(--color-ink-900)]">
-          Resume
+      <nav class="flex items-center gap-5 text-sm font-semibold text-gray-900">
+        <NuxtLink to="https://resume.peterkimzz.com" target="_blank" class="block py-3 text-inherit no-underline hover:underline">
+          Résumé
         </NuxtLink>
-        <NuxtLink to="https://github.com/peterkimzz" target="_blank" class="hover:text-[var(--color-ink-900)]">
+        <NuxtLink to="https://github.com/peterkimzz" target="_blank" class="block py-3 text-inherit no-underline hover:underline">
           GitHub
         </NuxtLink>
       </nav>
