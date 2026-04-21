@@ -3,9 +3,12 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "add:image": "node scripts/add-image.mjs",
     "build": "nuxt generate",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
+    "new:post": "node scripts/new-post.mjs",
+    "paste:image": "node scripts/paste-image.mjs",
     "preview": "nuxt preview",
     "preview:static": "serve .output/public -l 4173 --no-clipboard",
     "test:e2e": "yarn generate && playwright test",

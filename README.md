@@ -18,6 +18,22 @@ yarn dev
 yarn generate
 ```
 
+## Writing Workflow
+
+Posts stay in `content/*.md`, and post images live in `public/posts/<slug>/`.
+
+```bash
+yarn new:post my-post
+yarn paste:image my-post
+yarn add:image my-post ~/Desktop/foo.png
+```
+
+- `yarn new:post <slug>` creates a markdown file from `content/.template/basic.md`
+- `yarn add:image <slug> <file...>` copies local image files into `public/posts/<slug>/` and prints markdown image links
+- `yarn paste:image <slug>` saves the current clipboard image into `public/posts/<slug>/` using `pngpaste` when available, then prints the markdown image link
+- generated local image paths look like `/posts/<slug>/<filename>`
+- external image URLs are still supported when you want to use them manually
+
 ## Environment Variables
 
 ```bash
