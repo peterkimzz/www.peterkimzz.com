@@ -4,7 +4,7 @@ title: Nuxt3 Perfect Setup Guide 2024
 updated: 2023-11-06
 created: 2023-11-06
 image: https://user-images.githubusercontent.com/20244536/136804762-1e64b59c-e60e-462b-99f8-a39131f4c507.png
-draft: true
+published: true
 ---
 
 이번 포스팅에서는 여러분들이 Nuxt3를 이용해 어느 정도 큰 규모의 웹사이트를 만드려고 할 때 미리 구성하면 좋을 것들에 대해 자세히 알려드리려고 합니다.
