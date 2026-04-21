@@ -24,3 +24,11 @@ export function excerptFromRaw(raw?: string, limit = 140) {
 
   return `${text.slice(0, limit).trim()}...`
 }
+
+export function normalizeContentPath(path?: string) {
+  if (!path || path === '/') {
+    return '/'
+  }
+
+  return path.replace(/\/+$/, '') || '/'
+}

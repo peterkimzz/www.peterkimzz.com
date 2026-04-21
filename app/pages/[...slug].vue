@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { excerptFromRaw } from '~/utils/content'
+import { excerptFromRaw, normalizeContentPath } from '~/utils/content'
 
 const route = useRoute()
+const articlePath = normalizeContentPath(route.path)
 
 useZoomableImages()
 
-const { data: article } = await useAsyncData(`article:${route.path}`, () => {
+const { data: article } = await useAsyncData(`article:${articlePath}`, () => {
   return queryCollection('content')
-    .path(route.path)
+    .path(articlePath)
     .first()
 })
 
@@ -19,11 +20,11 @@ if (!article.value || !article.value.published) {
   })
 }
 
-const { data: related } = await useAsyncData(`related:${route.path}`, () => {
+const { data: related } = await useAsyncData(`related:${articlePath}`, () => {
   return queryCollection('content')
     .where('published', '=', true)
     .where('category', '=', article.value?.category || '')
-    .where('path', '<>', route.path)
+    .where('path', '<>', articlePath)
     .order('created', 'DESC')
     .select('path', 'title', 'description', 'created', 'category', 'rawbody')
     .all()
