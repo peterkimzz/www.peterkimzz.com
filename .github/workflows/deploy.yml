@@ -40,6 +40,9 @@ jobs:
           NUXT_PUBLIC_SITE_URL: https://www.peterkimzz.com
         run: yarn generate
 
+      - name: Verify sitemap exists
+        run: test -f .output/public/sitemap.xml
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 

@@ -6,6 +6,7 @@ export default defineNuxtConfig({
     '@nuxt/hints',
     '@nuxt/image',
     '@nuxt/scripts',
+    '@nuxtjs/sitemap',
     '@nuxt/test-utils',
     '@nuxt/ui',
     '@nuxt/content',
@@ -34,5 +35,13 @@ export default defineNuxtConfig({
   site: {
     url: process.env.NUXT_PUBLIC_SITE_URL || 'https://www.peterkimzz.com',
     name: 'peterkimzz',
+  },
+  sitemap: {
+    exclude: [
+      '/200',
+      '/404',
+      '/_payload.json',
+      '/__nuxt_content/**',
+    ],
   },
 })
