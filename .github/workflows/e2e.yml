@@ -1,0 +1,42 @@
+name: Playwright E2E
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: yarn
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('yarn.lock') }}
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run E2E tests
+        env:
+          CI: true
+          NUXT_PUBLIC_SITE_URL: https://www.peterkimzz.com
+        run: yarn test:e2e
