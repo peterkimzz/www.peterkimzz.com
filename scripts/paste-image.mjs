@@ -11,6 +11,15 @@ import {
   toMarkdownImage,
 } from './utils.mjs'
 
+function copyToClipboard(text) {
+  const result = spawnSync('pbcopy', {
+    input: text,
+    encoding: 'utf8',
+  })
+
+  return !result.error && result.status === 0
+}
+
 async function main() {
   const slug = getSlug(process.argv[2])
   const baseName = process.argv[3] || `${slug}-${getLocalDateString()}`
@@ -32,11 +41,17 @@ async function main() {
   }
 
   const publicPath = getPublicImagePath(slug, targetName)
+  const markdown = toMarkdownImage(publicPath)
+  const didCopy = copyToClipboard(markdown)
 
   process.stdout.write([
     `Saved clipboard image for ${slug}`,
-    toMarkdownImage(publicPath),
-  ].join('\n'))
+    '',
+    'Markdown:',
+    markdown,
+    '',
+    didCopy ? 'Copied markdown to clipboard.' : 'Could not copy markdown to clipboard.',
+  ].join('\n') + '\n')
 }
 
 main().catch((error) => {
