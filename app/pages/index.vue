@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { excerptFromRaw } from '~/utils/content'
+import { excerptFromRaw } from "~/utils/content";
 
-const { data: articles } = await useAsyncData('home-articles', () => {
-  return queryCollection('content')
-    .where('published', '=', true)
-    .order('created', 'DESC')
-    .select('path', 'title', 'description', 'created', 'category', 'rawbody')
-    .all()
-})
+const { data: articles } = await useAsyncData("home-articles", () => {
+  return queryCollection("content")
+    .where("published", "=", true)
+    .order("created", "DESC")
+    .select("path", "title", "description", "created", "category", "rawbody")
+    .all();
+});
 
 const cards = computed(() => {
   return (articles.value || []).map((article) => ({
     ...article,
     description: article.description || excerptFromRaw(article.rawbody),
-  }))
-})
+  }));
+});
 </script>
 
 <template>

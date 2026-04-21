@@ -1,50 +1,56 @@
 <script setup lang="ts">
-import { excerptFromRaw, normalizeContentPath } from '~/utils/content'
+import { excerptFromRaw, normalizeContentPath } from "~/utils/content";
 
-const route = useRoute()
-const articlePath = normalizeContentPath(route.path)
+const route = useRoute();
+const articlePath = normalizeContentPath(route.path);
 
-useZoomableImages()
+useZoomableImages();
 
 const { data: article } = await useAsyncData(`article:${articlePath}`, () => {
-  return queryCollection('content')
-    .path(articlePath)
-    .first()
-})
+  return queryCollection("content").path(articlePath).first();
+});
 
 if (!article.value || !article.value.published) {
   throw createError({
     statusCode: 404,
-    statusMessage: 'Page not found',
+    statusMessage: "Page not found",
     fatal: true,
-  })
+  });
 }
 
 const { data: related } = await useAsyncData(`related:${articlePath}`, () => {
-  return queryCollection('content')
-    .where('published', '=', true)
-    .where('category', '=', article.value?.category || '')
-    .where('path', '<>', articlePath)
-    .order('created', 'DESC')
-    .select('path', 'title', 'description', 'created', 'category', 'rawbody')
-    .all()
-})
+  return queryCollection("content")
+    .where("published", "=", true)
+    .where("category", "=", article.value?.category || "")
+    .where("path", "<>", articlePath)
+    .order("created", "DESC")
+    .select("path", "title", "description", "created", "category", "rawbody")
+    .all();
+});
 
 useSeoMeta({
   title: article.value.title,
-  description: article.value.description || excerptFromRaw(article.value.rawbody),
+  description:
+    article.value.description || excerptFromRaw(article.value.rawbody),
   ogTitle: article.value.title,
-  ogDescription: article.value.description || excerptFromRaw(article.value.rawbody),
+  ogDescription:
+    article.value.description || excerptFromRaw(article.value.rawbody),
   ogImage: article.value.image,
-})
+});
 </script>
 
 <template>
   <div class="mx-auto max-w-6xl px-5 py-10 sm:px-8">
-    <div class="flex h-full flex-col gap-10 transition-all lg:flex-row lg:gap-10">
-      <main class="mx-auto w-full max-w-prose lg:flex-1 lg:overflow-y-scroll lg:pr-4">
+    <div
+      class="flex h-full flex-col gap-10 transition-all lg:flex-row lg:gap-10"
+    >
+      <main
+        class="mx-auto w-full max-w-prose lg:flex-1 lg:overflow-y-scroll lg:pr-4"
+      >
         <header class="pb-10 text-center">
-          <h1 class="mx-auto max-w-md pb-3 text-3xl font-bold leading-tight tracking-[-0.01em] text-black">
+          <h1
+            class="mx-auto max-w-md pb-3 text-3xl font-bold leading-tight tracking-[-0.01em] text-black"
+          >
             {{ article.title }}
           </h1>
 
@@ -59,14 +65,24 @@ useSeoMeta({
         <ArticleComment />
       </main>
 
-      <aside class="sticky top-[53px] mx-auto h-fit w-full max-w-prose py-2 lg:py-0">
-        <section v-if="article.body?.toc?.links?.length" class="hidden lg:block">
-          <h4 class="pb-0.5 text-sm font-semibold text-gray-600">
-            목차
-          </h4>
+      <aside
+        class="sticky top-[53px] mx-auto h-fit w-full max-w-prose py-2 lg:py-0"
+      >
+        <section
+          v-if="article.body?.toc?.links?.length"
+          class="hidden lg:block"
+        >
+          <h4 class="pb-0.5 text-sm font-semibold text-gray-600">목차</h4>
           <ul class="space-y-1">
-            <li v-for="link in article.body.toc.links" :key="link.id" class="font-medium text-gray-900">
-              <NuxtLink :to="`#${link.id}`" class="text-inherit no-underline hover:underline">
+            <li
+              v-for="link in article.body.toc.links"
+              :key="link.id"
+              class="font-medium text-gray-900"
+            >
+              <NuxtLink
+                :to="`#${link.id}`"
+                class="text-inherit no-underline hover:underline"
+              >
                 {{ link.text }}
               </NuxtLink>
             </li>
@@ -76,14 +92,10 @@ useSeoMeta({
     </div>
 
     <section class="py-10">
-      <h3 class="text-2xl font-bold text-black">
-        같은 카테고리의 다른 글
-      </h3>
+      <h3 class="text-2xl font-bold text-black">같은 카테고리의 다른 글</h3>
 
       <div class="py-10">
-        <div v-if="!related?.length">
-          다른 글이 없습니다.
-        </div>
+        <div v-if="!related?.length">다른 글이 없습니다.</div>
 
         <ul v-else class="grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
           <ArticleCard

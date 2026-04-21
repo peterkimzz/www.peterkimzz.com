@@ -6,7 +6,11 @@
     "add:image": "node scripts/add-image.mjs",
     "build": "nuxt generate",
     "dev": "nuxt dev",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "generate": "nuxt generate",
+    "lint": "nuxt prepare && eslint .",
+    "lint:fix": "nuxt prepare && eslint . --fix",
     "new:post": "node scripts/new-post.mjs",
     "paste:image": "node scripts/paste-image.mjs",
     "preview": "nuxt preview",
@@ -35,6 +39,8 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.8.3",
     "serve": "^14.2.6"
   }
 }

@@ -30,7 +30,9 @@ body {
 a {
   color: #2563eb;
   text-underline-offset: 0.25rem;
-  transition: color 180ms ease, text-decoration-color 180ms ease;
+  transition:
+    color 180ms ease,
+    text-decoration-color 180ms ease;
 }
 
 a:hover {

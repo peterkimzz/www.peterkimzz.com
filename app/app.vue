@@ -1,39 +1,51 @@
 <script setup lang="ts">
 useHead({
   htmlAttrs: {
-    dir: 'ltr',
-    lang: 'ko',
+    dir: "ltr",
+    lang: "ko",
   },
   meta: [
-    { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge,chrome=1' },
-    { name: 'robots', content: 'index, follow' },
-    { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' },
-    { name: 'google-site-verification', content: '4UxOeSKrw8W8YzFcrj7uL5G8n88ZFWKa0VHSHiDzyqg' },
-    { name: 'naver-site-verification', content: '7ba96ea30a0f3e92ddd2c4429331bfb82798e3ce' },
+    { "http-equiv": "X-UA-Compatible", content: "IE=edge,chrome=1" },
+    { name: "robots", content: "index, follow" },
+    {
+      name: "viewport",
+      content: "width=device-width, initial-scale=1, viewport-fit=cover",
+    },
+    {
+      name: "google-site-verification",
+      content: "4UxOeSKrw8W8YzFcrj7uL5G8n88ZFWKa0VHSHiDzyqg",
+    },
+    {
+      name: "naver-site-verification",
+      content: "7ba96ea30a0f3e92ddd2c4429331bfb82798e3ce",
+    },
   ],
   link: [
-    { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-    { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+    { rel: "preconnect", href: "https://fonts.googleapis.com" },
+    { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "" },
     {
-      rel: 'stylesheet',
-      href: 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Pretendard:wght@400;500;600;700;800&display=swap',
+      rel: "stylesheet",
+      href: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Pretendard:wght@400;500;600;700;800&display=swap",
     },
     {
-      rel: 'icon',
-      href: 'https://user-images.githubusercontent.com/20244536/132115763-2a9011f1-0336-4cb6-9a57-5e44def5c131.png',
+      rel: "icon",
+      href: "https://user-images.githubusercontent.com/20244536/132115763-2a9011f1-0336-4cb6-9a57-5e44def5c131.png",
     },
   ],
-})
+});
 
 useSeoMeta({
-  title: 'peterkimzz: 기술과 예술을 담은 블로그',
-  ogTitle: 'peterkimzz: 기술과 예술을 담은 블로그',
-  description: '프론트엔드, 그로스 엔지니어링과 UI/UX 디자인을 좋아하는 개발자 김동현입니다.',
-  ogDescription: '프론트엔드, 그로스 엔지니어링과 UI/UX 디자인을 좋아하는 개발자 김동현입니다.',
-  ogSiteName: 'peterkimzz',
-  ogImage: 'https://user-images.githubusercontent.com/20244536/132115770-59711547-4cb3-4a3a-abfe-12740b985441.png',
-  twitterCard: 'summary_large_image',
-})
+  title: "peterkimzz: 기술과 예술을 담은 블로그",
+  ogTitle: "peterkimzz: 기술과 예술을 담은 블로그",
+  description:
+    "프론트엔드, 그로스 엔지니어링과 UI/UX 디자인을 좋아하는 개발자 김동현입니다.",
+  ogDescription:
+    "프론트엔드, 그로스 엔지니어링과 UI/UX 디자인을 좋아하는 개발자 김동현입니다.",
+  ogSiteName: "peterkimzz",
+  ogImage:
+    "https://user-images.githubusercontent.com/20244536/132115770-59711547-4cb3-4a3a-abfe-12740b985441.png",
+  twitterCard: "summary_large_image",
+});
 </script>
 
 <template>

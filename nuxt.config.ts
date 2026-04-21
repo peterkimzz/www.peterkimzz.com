@@ -1,17 +1,17 @@
 export default defineNuxtConfig({
-  compatibilityDate: '2025-02-20',
+  compatibilityDate: "2025-02-20",
   devtools: { enabled: true },
   modules: [
-    '@nuxt/eslint',
-    '@nuxt/hints',
-    '@nuxt/image',
-    '@nuxt/scripts',
-    '@nuxtjs/sitemap',
-    '@nuxt/test-utils',
-    '@nuxt/ui',
-    '@nuxt/content',
+    "@nuxt/eslint",
+    "@nuxt/hints",
+    "@nuxt/image",
+    "@nuxt/scripts",
+    "@nuxtjs/sitemap",
+    "@nuxt/test-utils",
+    "@nuxt/ui",
+    "@nuxt/content",
   ],
-  css: ['~/assets/css/main.css'],
+  css: ["~/assets/css/main.css"],
   nitro: {
     prerender: {
       failOnError: true,
@@ -19,7 +19,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://www.peterkimzz.com',
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "https://www.peterkimzz.com",
     },
   },
   content: {
@@ -33,15 +33,10 @@ export default defineNuxtConfig({
     },
   },
   site: {
-    url: process.env.NUXT_PUBLIC_SITE_URL || 'https://www.peterkimzz.com',
-    name: 'peterkimzz',
+    url: process.env.NUXT_PUBLIC_SITE_URL || "https://www.peterkimzz.com",
+    name: "peterkimzz",
   },
   sitemap: {
-    exclude: [
-      '/200',
-      '/404',
-      '/_payload.json',
-      '/__nuxt_content/**',
-    ],
+    exclude: ["/200", "/404", "/_payload.json", "/__nuxt_content/**"],
   },
-})
+});

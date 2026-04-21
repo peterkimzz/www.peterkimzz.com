@@ -1,0 +1,9 @@
+.data
+.nuxt
+.output
+dist
+node_modules
+test-results
+content/**/*.md
+README.md
+yarn.lock

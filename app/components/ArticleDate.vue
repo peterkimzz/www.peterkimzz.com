@@ -1,19 +1,19 @@
 <script setup lang="ts">
 const props = defineProps<{
-  value?: string
-}>()
+  value?: string;
+}>();
 
 const formatted = computed(() => {
   if (!props.value) {
-    return ''
+    return "";
   }
 
-  return new Intl.DateTimeFormat('ko-KR', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  }).format(new Date(props.value))
-})
+  return new Intl.DateTimeFormat("ko-KR", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(new Date(props.value));
+});
 </script>
 
 <template>
