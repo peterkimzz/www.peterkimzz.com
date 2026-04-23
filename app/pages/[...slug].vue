@@ -46,7 +46,7 @@ useSeoMeta({
   <div class="mx-auto max-w-6xl px-5 py-10 sm:px-8 lg:py-14">
     <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_15rem] lg:gap-14">
       <main class="mx-auto w-full max-w-3xl min-w-0 xl:max-w-4xl">
-        <header class="pb-10 text-center">
+        <header class="text-center">
           <h1
             class="mx-auto max-w-2xl pb-3 text-3xl font-bold leading-tight tracking-[-0.02em] text-gray-950 sm:text-4xl"
           >
@@ -68,40 +68,7 @@ useSeoMeta({
       </main>
 
       <aside class="hidden lg:block">
-        <section
-          v-if="tocLinks.length"
-          class="sticky top-24 border-l border-gray-200 pl-6"
-        >
-          <h4
-            class="pb-3 text-xs font-semibold uppercase tracking-[0.18em] text-gray-400"
-          >
-            목차
-          </h4>
-          <ul class="space-y-3">
-            <li v-for="link in tocLinks" :key="link.id" class="space-y-2">
-              <NuxtLink
-                :to="`#${link.id}`"
-                class="block text-sm leading-6 font-medium text-gray-700 no-underline transition hover:text-gray-950 hover:underline"
-              >
-                {{ link.text }}
-              </NuxtLink>
-
-              <ul
-                v-if="link.children?.length"
-                class="space-y-1.5 border-l border-gray-100 pl-3"
-              >
-                <li v-for="child in link.children" :key="child.id">
-                  <NuxtLink
-                    :to="`#${child.id}`"
-                    class="block text-sm leading-6 text-gray-500 no-underline transition hover:text-gray-800 hover:underline"
-                  >
-                    {{ child.text }}
-                  </NuxtLink>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </section>
+        <ArticleToc :links="tocLinks" />
       </aside>
     </div>
 
