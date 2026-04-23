@@ -42,7 +42,7 @@ watch(
 </script>
 
 <template>
-  <div class="mt-12 border-t pt-8">
+  <div class="mt-12">
     <div ref="container" class="giscus" />
   </div>
 </template>

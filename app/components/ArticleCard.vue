@@ -16,7 +16,7 @@ defineProps<{
     >
       <header class="sm:h-[142px]">
         <h2
-          class="pb-2 text-xl font-bold leading-tight tracking-[-0.01em] text-gray-900 group-hover:underline"
+          class="pb-2 text-xl font-bold leading-tight tracking-[-0.01em] text-gray-900 decoration-gray-900/80 underline-offset-4 group-hover:underline"
         >
           {{ title }}
         </h2>
