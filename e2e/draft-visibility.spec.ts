@@ -10,7 +10,7 @@ test.describe("draft visibility", () => {
   }) => {
     await page.goto("/");
 
-    await expect(page.getByRole("link", { name: "PETERKIM ZZ" })).toBeVisible();
+    await expect(page.getByText(/PETERKIM\s*ZZ/)).toBeVisible();
     await expect(
       page.getByRole("link", { name: "평생 무료로 개인 블로그 운영하기" }),
     ).toBeVisible();
