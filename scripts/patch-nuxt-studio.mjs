@@ -5,6 +5,7 @@ import process from "node:process";
 const supportedVersion = "1.7.0";
 const studioRoot = path.resolve("node_modules/nuxt-studio");
 const packageJsonPath = path.join(studioRoot, "package.json");
+const moduleEntryPath = path.join(studioRoot, "dist/module/module.mjs");
 const appDirectory = path.join(studioRoot, "dist/app");
 const appEntryPath = path.join(appDirectory, "main.js");
 
@@ -35,6 +36,7 @@ async function main() {
     );
   }
 
+  const didPatchMediaPolicy = await patchMediaPolicyDefaults();
   const appEntry = await readFile(appEntryPath, "utf8");
   const bundleNames = [...appEntry.matchAll(/from"\.\/(main-.+?\.js)"/g)].map(
     (match) => match[1],
@@ -74,10 +76,29 @@ async function main() {
   }
 
   process.stdout.write(
-    patchedCount
-      ? `Patched Nuxt Studio image controls in ${patchedCount} bundles.\n`
+    patchedCount || didPatchMediaPolicy
+      ? `Patched Nuxt Studio media policy and image controls in ${patchedCount} bundles.\n`
       : "Nuxt Studio image editor patch already applied.\n",
   );
+}
+
+async function patchMediaPolicyDefaults() {
+  const source = await readFile(moduleEntryPath, "utf8");
+  const marker = "peterkimzz-image-only-media";
+
+  if (source.includes(marker)) {
+    return false;
+  }
+
+  const patchedSource = replaceOnce(
+    source,
+    'allowedTypes: ["image/*", "video/*", "audio/*"],',
+    `allowedTypes: [], // ${marker}`,
+    "default Studio media types",
+  );
+
+  await writeFile(moduleEntryPath, patchedSource, "utf8");
+  return true;
 }
 
 async function patchBundle(bundlePath, source) {

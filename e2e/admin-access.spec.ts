@@ -1,5 +1,24 @@
 import { expect, test } from "@playwright/test";
 
+test("studio media policy only allows the configured image formats", async ({
+  request,
+}) => {
+  const response = await request.get("/");
+  const html = await response.text();
+  const allowedTypesMatch = html.match(/allowedTypes:(\[[^\]]+\])/);
+  const allowedTypes = allowedTypesMatch
+    ? JSON.parse(allowedTypesMatch[1])
+    : undefined;
+
+  expect(allowedTypes).toEqual([
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+    "image/gif",
+    "image/avif",
+  ]);
+});
+
 test("admin routes require GitHub OAuth and are never cached or indexed", async ({
   request,
 }) => {
