@@ -4,6 +4,7 @@
 .nuxt
 .nitro
 .cache
+.vercel
 dist
 playwright-report
 test-results

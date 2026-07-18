@@ -2,19 +2,24 @@
 const props = defineProps<{
   src?: string;
   alt?: string;
+  title?: string;
   width?: string | number;
   height?: string | number;
+  align?: "left" | "center" | "right";
+  size?: "small" | "medium" | "large" | "full";
+  caption?: string;
 }>();
 </script>
 
 <template>
-  <NuxtImg
+  <PostImage
     :src="props.src"
-    :alt="props.alt || ''"
+    :alt="props.alt"
+    :title="props.title"
     :width="props.width"
     :height="props.height"
-    loading="lazy"
-    class="mx-auto my-8 w-full rounded-3xl border border-black/5 shadow-[0_24px_80px_rgba(22,18,13,0.12)]"
-    data-zoomable
+    :align="props.align"
+    :size="props.size"
+    :caption="props.caption"
   />
 </template>

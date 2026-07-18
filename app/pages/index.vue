@@ -5,7 +5,15 @@ const { data: articles } = await useAsyncData("home-articles", () => {
   return queryCollection("content")
     .where("published", "=", true)
     .order("created", "DESC")
-    .select("path", "title", "description", "created", "category", "rawbody")
+    .select(
+      "path",
+      "title",
+      "description",
+      "created",
+      "category",
+      "tags",
+      "rawbody",
+    )
     .all();
 });
 
@@ -28,6 +36,7 @@ const cards = computed(() => {
         :description="article.description"
         :created="article.created"
         :category="article.category"
+        :tags="article.tags"
       />
     </ul>
   </div>
