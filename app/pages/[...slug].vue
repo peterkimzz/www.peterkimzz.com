@@ -1,7 +1,14 @@
 <script setup lang="ts">
-import { excerptFromRaw, normalizeContentPath } from "~/utils/content";
+import {
+  excerptFromRaw,
+  normalizeContentPath,
+  normalizeTag,
+  tagPath,
+  toAbsoluteUrl,
+} from "~/utils/content";
 
 const route = useRoute();
+const runtimeConfig = useRuntimeConfig();
 const articlePath = normalizeContentPath(route.path);
 
 useZoomableImages();
@@ -20,6 +27,10 @@ if (!article.value || !article.value.published) {
 
 const publishedArticle = article.value;
 const tocLinks = computed(() => publishedArticle.body?.toc?.links || []);
+const articleTags = computed(() =>
+  [...new Set((publishedArticle.tags || []).map(normalizeTag))].filter(Boolean),
+);
+const seriesName = publishedArticle.series?.name?.trim();
 
 const { data: related } = await useAsyncData(`related:${articlePath}`, () => {
   return queryCollection("content")
@@ -31,14 +42,52 @@ const { data: related } = await useAsyncData(`related:${articlePath}`, () => {
     .all();
 });
 
+const { data: seriesArticles } = await useAsyncData(
+  `series:${seriesName || "none"}`,
+  async () => {
+    if (!seriesName) {
+      return [];
+    }
+
+    const candidates = await queryCollection("content")
+      .where("published", "=", true)
+      .select("path", "title", "series")
+      .all();
+
+    return candidates.filter(
+      (candidate) => candidate.series?.name?.trim() === seriesName,
+    );
+  },
+);
+
+const seoTitle = publishedArticle.seo?.title || publishedArticle.title;
+const seoDescription =
+  publishedArticle.seo?.description ||
+  publishedArticle.description ||
+  excerptFromRaw(publishedArticle.rawbody);
+const seoImage = publishedArticle.seo?.image || publishedArticle.image;
+const canonicalUrl =
+  toAbsoluteUrl(
+    publishedArticle.seo?.canonical,
+    runtimeConfig.public.siteUrl,
+  ) ||
+  toAbsoluteUrl(articlePath, runtimeConfig.public.siteUrl) ||
+  runtimeConfig.public.siteUrl;
+const absoluteSeoImage = toAbsoluteUrl(seoImage, runtimeConfig.public.siteUrl);
+
 useSeoMeta({
-  title: publishedArticle.title,
-  description:
-    publishedArticle.description || excerptFromRaw(publishedArticle.rawbody),
-  ogTitle: publishedArticle.title,
-  ogDescription:
-    publishedArticle.description || excerptFromRaw(publishedArticle.rawbody),
-  ogImage: publishedArticle.image,
+  title: seoTitle,
+  description: seoDescription,
+  ogTitle: seoTitle,
+  ogDescription: seoDescription,
+  ogImage: absoluteSeoImage,
+  twitterTitle: seoTitle,
+  twitterDescription: seoDescription,
+  twitterImage: absoluteSeoImage,
+});
+
+useHead({
+  link: [{ rel: "canonical", href: canonicalUrl }],
 });
 </script>
 
@@ -57,7 +106,36 @@ useSeoMeta({
             :value="publishedArticle.created"
             class="text-base font-medium text-gray-500 sm:text-lg"
           />
+
+          <ul
+            v-if="articleTags.length"
+            class="mt-4 flex flex-wrap justify-center gap-2"
+            aria-label="글 태그"
+          >
+            <li v-for="tag in articleTags" :key="tag">
+              <NuxtLink
+                :to="tagPath(tag)"
+                class="rounded-full bg-gray-100 px-3 py-1 text-sm font-semibold text-gray-600 no-underline hover:bg-gray-200 hover:no-underline"
+              >
+                #{{ tag }}
+              </NuxtLink>
+            </li>
+          </ul>
+
+          <ArticleSeoPreview
+            :title="seoTitle"
+            :description="seoDescription"
+            :image="absoluteSeoImage"
+            :canonical="canonicalUrl"
+          />
         </header>
+
+        <ArticleSeries
+          v-if="seriesName && seriesArticles?.length"
+          :name="seriesName"
+          :current-path="articlePath"
+          :articles="seriesArticles"
+        />
 
         <ContentRenderer
           :value="publishedArticle"
