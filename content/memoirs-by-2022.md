@@ -4,7 +4,6 @@ title: 2022년 회고
 image: https://user-images.githubusercontent.com/20244536/209142660-ab4f03d8-189b-48d4-8113-3f8e590c84a5.png
 updated: 2022-12-22
 created: 2022-12-22
-published: true
 ---
 
 <!-- 다크 테마에서 라이트 테마로 바뀐 블로그와 함께 올해 회고를 시작한다. 다크 테마가 눈이 편하다고 생각했는데 눈 건강에는 상당히 안좋다는 연구 결과를 보고 급하게 바꿨다.  -->

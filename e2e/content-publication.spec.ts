@@ -1,14 +1,12 @@
 import { expect, test } from "@playwright/test";
 import { gunzipSync } from "node:zlib";
 
-const draftPath = "/e2e-draft-hidden-post";
-const draftSlug = `${draftPath}/`;
-const draftTitle = "E2E Draft Hidden Post";
-const publishedPath = "/github-pages-nuxtjs";
-const publishedTitle = "평생 무료로 개인 블로그 운영하기";
+const articlePath = "/github-pages-nuxtjs";
+const articleTitle = "평생 무료로 개인 블로그 운영하기";
+const missingPath = "/e2e-missing-post/";
 
-test.describe("draft visibility", () => {
-  test("draft post is hidden from the home page and sitemap", async ({
+test.describe("committed content publication", () => {
+  test("committed content appears on the home page, sitemap, and content database", async ({
     page,
     request,
   }) => {
@@ -18,15 +16,13 @@ test.describe("draft visibility", () => {
     await expect(
       page.getByRole("link", { name: "평생 무료로 개인 블로그 운영하기" }),
     ).toBeVisible();
-    await expect(page.getByText(draftTitle)).toHaveCount(0);
 
     const sitemapResponse = await request.get("/sitemap.xml");
 
     expect(sitemapResponse.ok()).toBeTruthy();
     const sitemap = await sitemapResponse.text();
 
-    expect(sitemap).toContain(publishedPath);
-    expect(sitemap).not.toContain(draftPath);
+    expect(sitemap).toContain(articlePath);
 
     const contentDumpResponse = await request.get(
       "/__nuxt_content/content/sql_dump.txt",
@@ -36,14 +32,13 @@ test.describe("draft visibility", () => {
       Buffer.from(compressedDump, "base64"),
     ).toString();
 
-    expect(contentDump).toContain(publishedTitle);
-    expect(contentDump).not.toContain(draftTitle);
+    expect(contentDump).toContain(articleTitle);
   });
 
-  test("draft post returns the 404 experience on direct load", async ({
+  test("a missing content path returns the 404 experience", async ({
     page,
   }) => {
-    await page.goto(draftSlug);
+    await page.goto(missingPath);
 
     await expect(page.getByText("404")).toBeVisible();
     await expect(
@@ -52,6 +47,5 @@ test.describe("draft visibility", () => {
         name: "페이지를 찾을 수 없습니다.",
       }),
     ).toBeVisible();
-    await expect(page.getByText(draftTitle)).toHaveCount(0);
   });
 });

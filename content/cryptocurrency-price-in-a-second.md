@@ -5,7 +5,6 @@ description: 가상화폐 거래소 API를 활용해 브라우저에서 단축�
 image: https://user-images.githubusercontent.com/20244536/107003725-94aa9d80-67d0-11eb-8a27-9c68c45a3748.png
 updated: 2021-02-05
 created: 2021-02-05
-published: true
 ---
 
 요즘 한국엔 주식, 코인 거래가 정말로 이슈이다. 그냥 이슈가 아니라, 주식 안하는 사람들을 바보 취급하는 그런 이상한 분위기가 형성됐다.

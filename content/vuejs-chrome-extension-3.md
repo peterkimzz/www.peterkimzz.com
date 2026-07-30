@@ -4,7 +4,6 @@ title: Vue.js로 크롬 확장 프로그램 만들기 강의 - 3부
 updated: 2021-08-16
 created: 2021-08-16
 image: https://dynamisign.com/api/sign?d=peterkimzz.com&t=Vue.js%EB%A1%9C%20%ED%81%AC%EB%A1%AC%20%ED%99%95%EC%9E%A5%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8%20%EB%A7%8C%EB%93%A4%EA%B8%B0%20%EA%B0%95%EC%9D%98%20-%203%EB%B6%80
-published: true
 ---
 
 [이전 포스팅](/vuejs-chrome-extension-2)에서는 [Vite](https://vitejs.dev/)을 이용해 크롬 확장 프로그램을 만들기 위한 기본적인 프로젝트 환경 설정까지 마쳤습니다. 본격적으로 Vue.js 코드를 작성해보도록 합시다.
