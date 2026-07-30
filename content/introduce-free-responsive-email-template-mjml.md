@@ -1,9 +1,13 @@
 ---
-category: tech
 title: 평생 무료로 반응형 이메일 템플릿 무한대로 만들기 - mjml.io
-updated: 2022-01-07
+category: tech
+tags:
+  - tech
 created: 2022-01-07
-image:
+updated: 2022-01-07
+series:
+  name: 평생 무료
+  order: 4
 ---
 
 저는 이메일을 데스크톱과 모바일 환경에서 매일매일 확인합니다. 그런데 아직도 모바일 디스플레이에 최적화되지 않은 이메일을 받을 때가 많습니다.
@@ -15,8 +19,6 @@ image:
 <!--more-->
 
 저번에 작성한 [평생 무료로 커스텀 이메일 사용하기](/custom-email-service-for-free-forever) 포스팅에서는 `Node.js` 에서 프로그래밍적으로 이메일을 보내는 방법을 알아보았습니다. 저번 포스팅과 시리즈처럼 이어지는 내용입니다.
-
-:Serieis{:type="forever"}
 
 ## [mjml.io](https://mjml.io)
 

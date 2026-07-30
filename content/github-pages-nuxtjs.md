@@ -1,9 +1,14 @@
 ---
-category: tech
 title: 평생 무료로 개인 블로그 운영하기
+category: tech
+tags:
+  - tech
 image: https://user-images.githubusercontent.com/20244536/102336973-3aae0880-3fd5-11eb-8fd1-e3c184d6ab7e.jpg
-updated: 2020-12-17
 created: 2020-12-17
+updated: 2020-12-17
+series:
+  name: 평생 무료
+  order: 1
 ---
 
 거의 대부분의 개발자들이 `개인 블로그`를 운영하라고 얘기한다. 나도 그렇게 생각한다. 왜냐면 분명히 내가 작성했던 코드인데도, 일주일만 지나도 기억이 안나기 때문이다. 그리고 웬만하면 공개해서 작성하라고 하고 싶다. 이미 우리는 누군가가 옛날에 썼던 글을 보고, 문제를 해결한 경험히 굉장히 많기 때문이다. 나는 이런 개발자들의 문화가 너무 좋다. 이런 개발자들의 문화가 다른 업종에도 접목된다면 정말 좋으련만.
@@ -21,8 +26,6 @@ created: 2020-12-17
 3. Github 하나의 플랫폼 내에서 운영을 위한 모든 인프라를 쉽게 해결 가능
 
 Github가 망하지 않는 이상 평생 무료이고, Github Pages는 정말 쉽게 커스텀 도메인과 HTTPS까지 연결할 수 있다. ~~평생 Github에 충성하자.~~
-
-:Serieis{:type="forever"}
 
 ## 리파지토리 만들기
 

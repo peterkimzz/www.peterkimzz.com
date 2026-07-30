@@ -1,9 +1,14 @@
 ---
-category: tech
 title: 평생 무료로 커스텀 이메일 사용하기
-updated: 2021-09-30
-created: 2021-09-30
+category: tech
+tags:
+  - tech
 image: https://user-images.githubusercontent.com/20244536/135378482-9ac193f6-a6dd-42c1-91be-ebc83c8953dc.png
+created: 2021-09-30
+updated: 2021-09-30
+series:
+  name: 평생 무료
+  order: 3
 ---
 
 안녕하세요. 또 다시 찾아온 **평생 무료** 시리즈입니다. 저는 틈만나면 1인 사이드 프로젝트를 진행하기 때문에, 어떻게든 공짜로 서버를 돌리기 위해 온갖 노력을 하고 있습니다. 그래서 무료로 이용하는 방법에 관한 글을 몇 개 올렸는데 GA를 살펴보니 다른 주제보다 조회수가 높더군요. 역시 공짜가 좋네요.
@@ -12,8 +17,6 @@ image: https://user-images.githubusercontent.com/20244536/135378482-9ac193f6-a6d
 
 그런 관계로 제가 알고 있는 무료로 서비스를 운영하는 방법들을 시간이 날 때마다 종종 올려보도록 하겠습니다.
 ㄱ
-:Serieis{:type="forever"}
-
 ## 이메일 서비스
 
 이번엔 이메일입니다. 온라인 서비스 운영자에겐 필수라고 할 수 있겠습니다.

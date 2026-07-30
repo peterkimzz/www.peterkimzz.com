@@ -6,18 +6,20 @@ export default defineContentConfig({
       type: "page",
       source: "**/*.md",
       schema: z.object({
-        title: z.string().optional().editor({ label: "제목" }),
+        title: z.string().trim().min(1).editor({ label: "제목" }),
         description: z
           .string()
           .optional()
           .editor({ label: "설명", input: "textarea" }),
-        category: z.string().optional().editor({ label: "카테고리" }),
+        category: z
+          .enum(["tech", "retrospective", "design", "life", "nuxt3"])
+          .editor({ label: "카테고리" }),
         image: z
           .string()
           .optional()
           .editor({ label: "커버 이미지", input: "media" }),
-        created: z.string().optional().editor({ label: "작성일" }),
-        updated: z.string().optional().editor({ label: "수정일" }),
+        created: z.string().date().editor({ label: "작성일" }),
+        updated: z.string().date().editor({ label: "수정일" }),
         tags: z.array(z.string()).default([]).editor({
           label: "태그",
           description: "검색과 글 분류에 사용합니다.",
@@ -25,7 +27,7 @@ export default defineContentConfig({
         series: z
           .object({
             name: z.string().editor({ label: "시리즈 이름" }),
-            order: z.number().editor({ label: "시리즈 순서" }),
+            order: z.number().int().positive().editor({ label: "시리즈 순서" }),
           })
           .optional()
           .editor({
@@ -50,7 +52,6 @@ export default defineContentConfig({
             label: "SEO",
             description: "비워두면 글의 기본 정보를 사용합니다.",
           }),
-        rawbody: z.string().optional().editor({ hidden: true }),
       }),
     }),
   },

@@ -1,16 +1,8 @@
 ---
-category: life
 title: {{title}}
-description:
-tags: []
-updated: {{date}}
+category: life
+tags:
+  - life
 created: {{date}}
-# image: /posts/{{slug}}/cover.png
+updated: {{date}}
 ---
-
-# {{title}}
-
-slug: `{{slug}}`
-images: `/posts/{{slug}}/`
-
-<!--more-->

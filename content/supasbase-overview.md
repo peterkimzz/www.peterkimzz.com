@@ -1,9 +1,11 @@
 ---
-category: tech
 title: Firebase를 대체할 오픈소스 프로젝트, Supabase
+category: tech
+tags:
+  - tech
 image: https://media.vlpt.us/images/peterkimzz/post/b2873856-20b6-49a4-a8f4-176a94c92d23/08f3d41684b91f7d68810459b2356ecb4819c382.png
-updated: 2020-12-15
 created: 2020-12-15
+updated: 2020-12-15
 ---
 
 [`Supabase`](https://supabase.io/)는 구글 Firebase를 엔터프라이즈 레벨에서도 사용 가능하도록 만든 오픈소스 프로젝트이다. 현재는 베타 서비스이다.

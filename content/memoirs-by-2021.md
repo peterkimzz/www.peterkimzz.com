@@ -1,9 +1,11 @@
 ---
-category: retrospective
 title: 2021년 회고
-updated: 2022-01-23
-created: 2022-01-23
+category: retrospective
+tags:
+  - retrospective
 image: https://user-images.githubusercontent.com/20244536/150673916-c7d30dcb-e458-40d3-aaf0-2cd38030c29b.png
+created: 2022-01-23
+updated: 2022-01-23
 ---
 
 다들 새해 다짐 잘 실천하고 계신가요? 전 아직 다짐을 못했습니다. 약간의 업무 슬럼프가 오는 것 같아서 뭘 해야할지 아직 계획이 없네요. 날 좀 풀리면 운동부터 다시 시작해야할 것 같습니다. 코로나가 얼른 끝났으면 좋겠습니다.
