@@ -77,13 +77,6 @@ export default defineNuxtConfig({
       },
     },
   },
-  hooks: {
-    "content:file:afterParse": ({ content }) => {
-      if (process.env.NODE_ENV === "production" && content.published !== true) {
-        throw new Error("Unpublished content is excluded from production.");
-      }
-    },
-  },
   studio: {
     route: "/admin",
     repository: {

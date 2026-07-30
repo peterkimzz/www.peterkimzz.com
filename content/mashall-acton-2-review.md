@@ -4,7 +4,6 @@ title: 블랙프라이데이를 맞아 마샬 액톤 2 스피커를 구매했습
 updated: 2021-12-06
 created: 2021-12-06
 image: https://user-images.githubusercontent.com/20244536/144752818-3ce100b1-ae3d-47ec-ade0-239e9c4d55ba.jpeg
-published: true
 ---
 
 매년 11월 마지막 금요일은 블랙 프라이데이입니다. 원래 무슨 xx데이 하는 것들은 다 마케팅 술수라고 생각해서 일부러 더 클릭을 안하지만, 이번에는 벼르고 있던 제품이 있었습니다. 바로 [마샬 액톤 2](https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=%EB%A7%88%EC%83%AC+%EC%95%A1%ED%86%A4+2) 입니다!

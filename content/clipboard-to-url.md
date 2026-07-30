@@ -4,7 +4,6 @@ title: 클립보드 이미지를 1초만에 링크로 만드는 툴 개발하기
 updated: 2021-09-14
 created: 2021-09-14
 image: https://user-images.githubusercontent.com/20244536/133209740-1982eec8-1c1a-4dc9-8c37-ee5970d6ee0a.png
-published: true
 ---
 
 저는 이 블로그를 운영하면서 가장 귀찮은 일이 하나 있습니다. 바로 **이미지 주소**를 만드는 일인데요, 저는 `@nuxt/content` 모듈을 이용해 마크다운 포맷을 이용하는 정적 블로그를 운영 중이라 글 작성 중에 원격 이미지 주소를 삽입하는 기능을 사용하지 않습니다.

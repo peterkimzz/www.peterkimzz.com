@@ -9,7 +9,6 @@ const tag = normalizeTag(rawTag);
 
 const { data: allArticles } = await useAsyncData(`tag:${tag}`, () =>
   queryCollection("content")
-    .where("published", "=", true)
     .order("created", "DESC")
     .select(
       "path",

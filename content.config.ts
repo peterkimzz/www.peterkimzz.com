@@ -50,10 +50,6 @@ export default defineContentConfig({
             label: "SEO",
             description: "비워두면 글의 기본 정보를 사용합니다.",
           }),
-        published: z.boolean().default(false).editor({
-          label: "공개",
-          description: "켜야 블로그 목록과 직접 URL에 표시됩니다.",
-        }),
         rawbody: z.string().optional().editor({ hidden: true }),
       }),
     }),

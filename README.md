@@ -29,8 +29,9 @@ Production content is edited at `https://www.peterkimzz.com/admin` with Nuxt
 Studio. GitHub OAuth is restricted to the moderator email configured through
 `STUDIO_GITHUB_MODERATORS`.
 
-- New posts default to `published: false`.
-- Publishing creates a commit on `main`; Vercel then rebuilds the site.
+- Studio keeps drafts in the current browser until `Finish update`.
+- `Finish update` creates a commit on `main`; Vercel then rebuilds the site,
+  and every document committed under `content/` is public.
 - Uploaded images stay in Git under `public/posts/<slug>/`.
 - Opening the media uploader while editing a post creates and selects that
   post's `public/posts/<slug>/` folder.
@@ -41,7 +42,7 @@ Studio. GitHub OAuth is restricted to the moderator email configured through
 - Frontmatter forms support tags, series ordering, and SEO overrides. Tags get
   dedicated `/tags/<tag>` pages, series entries get previous/next navigation,
   and authenticated Studio sessions see an SEO preview in each article.
-- Studio drafts are browser-local until they are published.
+- Long-lived private drafts must not be committed under `content/`.
 
 In local development, run `yarn dev` and open `/admin`. Studio writes changes
 directly to the local content and public directories without OAuth.
@@ -67,7 +68,8 @@ yarn paste:image my-post
 yarn add:image my-post ~/Desktop/foo.png
 ```
 
-- `yarn new:post <slug>` creates a markdown file from `content/.template/basic.md`
+- `yarn new:post <slug>` creates a markdown file from
+  `scripts/templates/basic.md`
 - `yarn add:image <slug> <file...>` copies local image files into `public/posts/<slug>/` and prints markdown image links
 - `yarn paste:image <slug>` saves the current clipboard image into `public/posts/<slug>/` using `pngpaste` when available, then prints the markdown image link
 - generated local image paths look like `/posts/<slug>/<filename>`

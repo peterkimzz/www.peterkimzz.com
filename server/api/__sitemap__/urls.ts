@@ -2,7 +2,6 @@ import { queryCollection } from "@nuxt/content/server";
 
 export default defineSitemapEventHandler(async (event) => {
   const posts = await queryCollection(event, "content")
-    .where("published", "=", true)
     .select("path", "updated", "tags")
     .all();
 

@@ -17,7 +17,7 @@ const { data: article } = await useAsyncData(`article:${articlePath}`, () => {
   return queryCollection("content").path(articlePath).first();
 });
 
-if (!article.value || !article.value.published) {
+if (!article.value) {
   throw createError({
     statusCode: 404,
     statusMessage: "Page not found",
@@ -25,17 +25,16 @@ if (!article.value || !article.value.published) {
   });
 }
 
-const publishedArticle = article.value;
-const tocLinks = computed(() => publishedArticle.body?.toc?.links || []);
+const currentArticle = article.value;
+const tocLinks = computed(() => currentArticle.body?.toc?.links || []);
 const articleTags = computed(() =>
-  [...new Set((publishedArticle.tags || []).map(normalizeTag))].filter(Boolean),
+  [...new Set((currentArticle.tags || []).map(normalizeTag))].filter(Boolean),
 );
-const seriesName = publishedArticle.series?.name?.trim();
+const seriesName = currentArticle.series?.name?.trim();
 
 const { data: related } = await useAsyncData(`related:${articlePath}`, () => {
   return queryCollection("content")
-    .where("published", "=", true)
-    .where("category", "=", publishedArticle.category || "")
+    .where("category", "=", currentArticle.category || "")
     .where("path", "<>", articlePath)
     .order("created", "DESC")
     .select("path", "title", "description", "created", "category", "rawbody")
@@ -50,7 +49,6 @@ const { data: seriesArticles } = await useAsyncData(
     }
 
     const candidates = await queryCollection("content")
-      .where("published", "=", true)
       .select("path", "title", "series")
       .all();
 
@@ -60,17 +58,14 @@ const { data: seriesArticles } = await useAsyncData(
   },
 );
 
-const seoTitle = publishedArticle.seo?.title || publishedArticle.title;
+const seoTitle = currentArticle.seo?.title || currentArticle.title;
 const seoDescription =
-  publishedArticle.seo?.description ||
-  publishedArticle.description ||
-  excerptFromRaw(publishedArticle.rawbody);
-const seoImage = publishedArticle.seo?.image || publishedArticle.image;
+  currentArticle.seo?.description ||
+  currentArticle.description ||
+  excerptFromRaw(currentArticle.rawbody);
+const seoImage = currentArticle.seo?.image || currentArticle.image;
 const canonicalUrl =
-  toAbsoluteUrl(
-    publishedArticle.seo?.canonical,
-    runtimeConfig.public.siteUrl,
-  ) ||
+  toAbsoluteUrl(currentArticle.seo?.canonical, runtimeConfig.public.siteUrl) ||
   toAbsoluteUrl(articlePath, runtimeConfig.public.siteUrl) ||
   runtimeConfig.public.siteUrl;
 const absoluteSeoImage = toAbsoluteUrl(seoImage, runtimeConfig.public.siteUrl);
@@ -99,11 +94,11 @@ useHead({
           <h1
             class="mx-auto max-w-2xl pb-3 text-3xl font-bold leading-tight tracking-[-0.02em] text-gray-950 sm:text-4xl"
           >
-            {{ publishedArticle.title }}
+            {{ currentArticle.title }}
           </h1>
 
           <ArticleDate
-            :value="publishedArticle.created"
+            :value="currentArticle.created"
             class="text-base font-medium text-gray-500 sm:text-lg"
           />
 
@@ -138,7 +133,7 @@ useHead({
         />
 
         <ContentRenderer
-          :value="publishedArticle"
+          :value="currentArticle"
           class="article-prose prose mt-10 max-w-none md:prose-lg prose-headings:tracking-tight prose-p:text-gray-700 prose-p:font-medium prose-strong:font-bold prose-blockquote:border-l-4 prose-blockquote:border-gray-200 prose-blockquote:text-gray-600"
         />
 

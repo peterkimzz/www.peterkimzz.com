@@ -1,9 +1,11 @@
 .data
+.context
 .nuxt
 .output
 dist
 node_modules
 test-results
 content/**/*.md
+scripts/templates/**/*.md
 README.md
 yarn.lock

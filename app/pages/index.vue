@@ -3,7 +3,6 @@ import { excerptFromRaw } from "~/utils/content";
 
 const { data: articles } = await useAsyncData("home-articles", () => {
   return queryCollection("content")
-    .where("published", "=", true)
     .order("created", "DESC")
     .select(
       "path",
