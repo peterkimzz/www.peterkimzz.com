@@ -25,16 +25,18 @@ if (!article.value) {
   });
 }
 
-const currentArticle = article.value;
-const tocLinks = computed(() => currentArticle.body?.toc?.links || []);
+const currentArticle = computed(() => article.value!);
+const tocLinks = computed(() => currentArticle.value.body?.toc?.links || []);
 const articleTags = computed(() =>
-  [...new Set((currentArticle.tags || []).map(normalizeTag))].filter(Boolean),
+  [...new Set((currentArticle.value.tags || []).map(normalizeTag))].filter(
+    Boolean,
+  ),
 );
-const seriesName = currentArticle.series?.name?.trim();
+const seriesName = computed(() => currentArticle.value.series?.name?.trim());
 
 const { data: related } = await useAsyncData(`related:${articlePath}`, () => {
   return queryCollection("content")
-    .where("category", "=", currentArticle.category || "")
+    .where("category", "=", currentArticle.value.category || "")
     .where("path", "<>", articlePath)
     .order("created", "DESC")
     .select("path", "title", "description", "created", "category", "rawbody")
@@ -42,9 +44,9 @@ const { data: related } = await useAsyncData(`related:${articlePath}`, () => {
 });
 
 const { data: seriesArticles } = await useAsyncData(
-  `series:${seriesName || "none"}`,
+  `series:${articlePath}`,
   async () => {
-    if (!seriesName) {
+    if (!seriesName.value) {
       return [];
     }
 
@@ -53,37 +55,50 @@ const { data: seriesArticles } = await useAsyncData(
       .all();
 
     return candidates.filter(
-      (candidate) => candidate.series?.name?.trim() === seriesName,
+      (candidate) => candidate.series?.name?.trim() === seriesName.value,
     );
   },
 );
 
-const seoTitle = currentArticle.seo?.title || currentArticle.title;
-const seoDescription =
-  currentArticle.seo?.description ||
-  currentArticle.description ||
-  excerptFromRaw(currentArticle.rawbody);
-const seoImage = currentArticle.seo?.image || currentArticle.image;
-const canonicalUrl =
-  toAbsoluteUrl(currentArticle.seo?.canonical, runtimeConfig.public.siteUrl) ||
-  toAbsoluteUrl(articlePath, runtimeConfig.public.siteUrl) ||
-  runtimeConfig.public.siteUrl;
-const absoluteSeoImage = toAbsoluteUrl(seoImage, runtimeConfig.public.siteUrl);
+const seoTitle = computed(
+  () => currentArticle.value.seo?.title || currentArticle.value.title,
+);
+const seoDescription = computed(
+  () =>
+    currentArticle.value.seo?.description ||
+    currentArticle.value.description ||
+    excerptFromRaw(currentArticle.value.rawbody),
+);
+const seoImage = computed(
+  () => currentArticle.value.seo?.image || currentArticle.value.image,
+);
+const canonicalUrl = computed(
+  () =>
+    toAbsoluteUrl(
+      currentArticle.value.seo?.canonical,
+      runtimeConfig.public.siteUrl,
+    ) ||
+    toAbsoluteUrl(articlePath, runtimeConfig.public.siteUrl) ||
+    runtimeConfig.public.siteUrl,
+);
+const absoluteSeoImage = computed(() =>
+  toAbsoluteUrl(seoImage.value, runtimeConfig.public.siteUrl),
+);
 
 useSeoMeta({
-  title: seoTitle,
-  description: seoDescription,
-  ogTitle: seoTitle,
-  ogDescription: seoDescription,
-  ogImage: absoluteSeoImage,
-  twitterTitle: seoTitle,
-  twitterDescription: seoDescription,
-  twitterImage: absoluteSeoImage,
+  title: () => seoTitle.value,
+  description: () => seoDescription.value,
+  ogTitle: () => seoTitle.value,
+  ogDescription: () => seoDescription.value,
+  ogImage: () => absoluteSeoImage.value,
+  twitterTitle: () => seoTitle.value,
+  twitterDescription: () => seoDescription.value,
+  twitterImage: () => absoluteSeoImage.value,
 });
 
-useHead({
-  link: [{ rel: "canonical", href: canonicalUrl }],
-});
+useHead(() => ({
+  link: [{ rel: "canonical", href: canonicalUrl.value }],
+}));
 </script>
 
 <template>
