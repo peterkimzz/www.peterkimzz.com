@@ -27,7 +27,21 @@ export default defineNuxtConfig({
     "@nuxt/content",
     "nuxt-studio",
   ],
-  css: ["~/assets/css/main.css"],
+  css: [
+    "@fontsource/pretendard/400.css",
+    "@fontsource/pretendard/500.css",
+    "@fontsource/pretendard/600.css",
+    "@fontsource/pretendard/700.css",
+    "@fontsource/pretendard/800.css",
+    "@fontsource/jetbrains-mono/400.css",
+    "@fontsource/jetbrains-mono/500.css",
+    "@fontsource/jetbrains-mono/600.css",
+    "@fontsource/jetbrains-mono/700.css",
+    "~/assets/css/main.css",
+  ],
+  ui: {
+    fonts: false,
+  },
   nitro: {
     prerender: {
       failOnError: true,
