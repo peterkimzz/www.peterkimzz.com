@@ -1,9 +1,11 @@
 ---
-category: retrospective
 title: 용산 공유오피스 파이브스팟 1개월 이용 후기
-updated: 2021-12-26
-created: 2021-12-26
+category: retrospective
+tags:
+  - retrospective
 image: https://user-images.githubusercontent.com/20244536/147403256-c67c0101-6463-4150-82f1-30400946e6a9.JPEG
+created: 2021-12-26
+updated: 2021-12-26
 ---
 
 재직 중인 회사가 여름쯤 장기 재택 근무로 전환했습니다. 저는 입사한지 2년 정도 되었는데 대표님이 위워크를 좋아하셔서 그 동안 위워크 선릉, 종로지점으로 출근했습니다.

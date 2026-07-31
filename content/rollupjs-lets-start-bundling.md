@@ -1,9 +1,11 @@
 ---
-category: tech
 title: Rollup.js - 번들링, 파일을 하나로 합쳐보자
+category: tech
+tags:
+  - tech
 image: https://user-images.githubusercontent.com/20244536/107738251-a6002680-6d49-11eb-8708-dbe40704924e.png
-updated: 2021-02-09
 created: 2021-02-09
+updated: 2021-02-09
 ---
 
 `번들링` 이라는 말을 프론트엔드 개발자라면 많이 들어보셨을겁니다. 번들링은, 파일을 하나로 묶는 것을 말합니다. 그럼 왜 굳이 파일을 하나로 묶어야 할까요? 바로 **HTTP 통신의 특성 때문입니다.**

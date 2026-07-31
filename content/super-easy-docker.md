@@ -1,9 +1,11 @@
 ---
-category: tech
 title: 정말 너무 쉬운 Docker
-updated: 2021-06-09
-created: 2021-06-09
+category: tech
+tags:
+  - tech
 image: https://dynamisign.com/api/sign?t=%EC%A0%95%EB%A7%90%20%EB%84%88%EB%AC%B4%20%EC%89%AC%EC%9A%B4%20Docker&d=peterkimzz.com
+created: 2021-06-09
+updated: 2021-06-09
 ---
 
 우리가 [`Docker`](https://docker.com)를 사용해야하는 가장 큰 이유는, 어떤 컴퓨터에서든 똑같은 개발 환경을 보장해주기 떄문입니다. 로컬 컴퓨터에서 열심히 개발하고 `AWS`에 코드를 올렸는데, 에러를 마주하며 스트레스를 받았던 경험이 한 번쯤은 있을겁니다. 내 컴퓨터랑 클라우드 컴퓨터의 환경이 100% 똑같지 않기 때문이죠. 근데 이 어려움을 한 번에 해결해준다? 쓰지 말아야 할 이유가 없습니다.

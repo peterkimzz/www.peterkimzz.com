@@ -42,6 +42,12 @@ Studio. GitHub OAuth is restricted to the moderator email configured through
 - Frontmatter forms support tags, series ordering, and SEO overrides. Tags get
   dedicated `/tags/<tag>` pages, series entries get previous/next navigation,
   and authenticated Studio sessions see an SEO preview in each article.
+- `title`, `category`, `created`, and `updated` are required. Categories use
+  `tech`, `retrospective`, `design`, `life`, or `nuxt3`.
+- Keep the category in `tags` by default. `description` is optional; when it is
+  omitted, Nuxt Content uses the first paragraph.
+- Dates use `YYYY-MM-DD`. Update `updated` manually whenever an existing post
+  changes.
 - Long-lived private drafts must not be committed under `content/`.
 
 In local development, run `yarn dev` and open `/admin`. Studio writes changes

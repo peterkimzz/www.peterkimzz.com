@@ -1,30 +1,3 @@
-export function stripMarkdown(raw: string) {
-  return raw
-    .replace(/^---[\s\S]*?---/m, "")
-    .replace(/```[\s\S]*?```/g, " ")
-    .replace(/`([^`]+)`/g, "$1")
-    .replace(/!\[[^\]]*]\([^)]*\)/g, " ")
-    .replace(/\[[^\]]*]\([^)]*\)/g, " ")
-    .replace(/^#+\s+/gm, "")
-    .replace(/[>*_-]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-export function excerptFromRaw(raw?: string, limit = 140) {
-  if (!raw) {
-    return "";
-  }
-
-  const text = stripMarkdown(raw);
-
-  if (text.length <= limit) {
-    return text;
-  }
-
-  return `${text.slice(0, limit).trim()}...`;
-}
-
 export function normalizeContentPath(path?: string) {
   if (!path || path === "/") {
     return "/";
@@ -39,6 +12,22 @@ export function normalizeTag(tag?: string) {
 
 export function tagPath(tag: string) {
   return `/tags/${encodeURIComponent(normalizeTag(tag))}`;
+}
+
+export function toSeoDescription(value?: string, limit = 140) {
+  const normalized = value?.replace(/\s+/g, " ").trim() || "";
+
+  if (normalized.length <= limit) {
+    return normalized;
+  }
+
+  const suffix = "...";
+  const contentLength = Math.max(0, limit - suffix.length);
+
+  return `${normalized.slice(0, contentLength).trimEnd()}${suffix}`.slice(
+    0,
+    limit,
+  );
 }
 
 export function toAbsoluteUrl(value: string | undefined, baseUrl: string) {

@@ -1,9 +1,11 @@
 ---
-category: retrospective
 title: 브라우저 확장 프로그램을 10개월동안 운영하면서 느낀 것들
-updated: 2021-10-10
-created: 2021-10-10
+category: retrospective
+tags:
+  - retrospective
 image: https://user-images.githubusercontent.com/20244536/136804762-1e64b59c-e60e-462b-99f8-a39131f4c507.png
+created: 2021-10-10
+updated: 2021-10-10
 ---
 
 올해 초 가상화폐 투자가 유행하면서 [코인 시세 1초만에 보는 크롬 확장 프로그램 만들기](/cryptocurrency-price-in-a-second/) 라는 글을 작성했고, 가상화폐 관련 확장 프로그램을 크롬 웹 스토어에 게시했습니다.
