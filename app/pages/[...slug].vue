@@ -25,23 +25,32 @@ if (!article.value) {
   });
 }
 
-const currentArticle = computed(() => article.value!);
-const tocLinks = computed(() => currentArticle.value.body?.toc?.links || []);
+const currentArticle = computed(() => article.value);
+const tocLinks = computed(() => currentArticle.value?.body?.toc?.links || []);
 const articleTags = computed(() =>
-  [...new Set((currentArticle.value.tags || []).map(normalizeTag))].filter(
+  [...new Set((currentArticle.value?.tags || []).map(normalizeTag))].filter(
     Boolean,
   ),
 );
-const seriesName = computed(() => currentArticle.value.series?.name?.trim());
+const currentCategory = computed(() => currentArticle.value?.category);
+const seriesName = computed(() => currentArticle.value?.series?.name?.trim());
 
-const { data: related } = await useAsyncData(`related:${articlePath}`, () => {
-  return queryCollection("content")
-    .where("category", "=", currentArticle.value.category)
-    .where("path", "<>", articlePath)
-    .order("created", "DESC")
-    .select("path", "title", "description", "created", "category")
-    .all();
-});
+const { data: related } = await useAsyncData(
+  `related:${articlePath}`,
+  async () => {
+    if (!currentCategory.value) {
+      return [];
+    }
+
+    return queryCollection("content")
+      .where("category", "=", currentCategory.value)
+      .where("path", "<>", articlePath)
+      .order("created", "DESC")
+      .select("path", "title", "description", "created", "category")
+      .all();
+  },
+  { watch: [currentCategory] },
+);
 
 const { data: seriesArticles } = await useAsyncData(
   `series:${articlePath}`,
@@ -58,23 +67,24 @@ const { data: seriesArticles } = await useAsyncData(
       (candidate) => candidate.series?.name?.trim() === seriesName.value,
     );
   },
+  { watch: [seriesName] },
 );
 
 const seoTitle = computed(
-  () => currentArticle.value.seo?.title || currentArticle.value.title,
+  () => currentArticle.value?.seo?.title || currentArticle.value?.title,
 );
 const seoDescription = computed(() =>
   toSeoDescription(
-    currentArticle.value.seo?.description || currentArticle.value.description,
+    currentArticle.value?.seo?.description || currentArticle.value?.description,
   ),
 );
 const seoImage = computed(
-  () => currentArticle.value.seo?.image || currentArticle.value.image,
+  () => currentArticle.value?.seo?.image || currentArticle.value?.image,
 );
 const canonicalUrl = computed(
   () =>
     toAbsoluteUrl(
-      currentArticle.value.seo?.canonical,
+      currentArticle.value?.seo?.canonical,
       runtimeConfig.public.siteUrl,
     ) ||
     toAbsoluteUrl(articlePath, runtimeConfig.public.siteUrl) ||
@@ -101,7 +111,10 @@ useHead(() => ({
 </script>
 
 <template>
-  <div class="mx-auto max-w-6xl px-5 py-10 sm:px-8 lg:py-14">
+  <div
+    v-if="currentArticle"
+    class="mx-auto max-w-6xl px-5 py-10 sm:px-8 lg:py-14"
+  >
     <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_15rem] lg:gap-14">
       <main class="mx-auto w-full max-w-3xl min-w-0 xl:max-w-4xl">
         <header class="text-center">

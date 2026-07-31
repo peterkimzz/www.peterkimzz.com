@@ -3,6 +3,7 @@ import {
   mockNuxtImport,
   mountSuspended,
 } from "@nuxt/test-utils/runtime";
+import { flushPromises } from "@vue/test-utils";
 import { useNuxtApp } from "#app";
 import { nextTick } from "vue";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -10,17 +11,29 @@ import ArticlePage from "~/pages/[...slug].vue";
 
 const queryState = vi.hoisted(() => ({
   article: undefined as Record<string, unknown> | undefined,
+  relatedCategories: [] as unknown[],
+  seriesCandidates: [] as Record<string, unknown>[],
 }));
 
 mockNuxtImport("queryCollection", () => {
   return () => {
+    let selectedFields: string[] = [];
     const builder = {
-      all: async () => [],
+      all: async () =>
+        selectedFields.includes("series") ? queryState.seriesCandidates : [],
       first: async () => queryState.article,
       order: () => builder,
       path: () => builder,
-      select: () => builder,
-      where: () => builder,
+      select: (...fields: string[]) => {
+        selectedFields = fields;
+        return builder;
+      },
+      where: (field: string, _operator: string, value: unknown) => {
+        if (field === "category") {
+          queryState.relatedCategories.push(value);
+        }
+        return builder;
+      },
     };
 
     return builder;
@@ -40,6 +53,12 @@ mockComponent("ArticleSeoPreview", {
   props: ["title", "description", "image", "canonical"],
   template:
     '<div data-testid="seo-preview">{{ title }}|{{ description }}|{{ canonical }}</div>',
+});
+
+mockComponent("ArticleSeries", {
+  props: ["name", "articles"],
+  template:
+    '<div data-testid="article-series">{{ name }}|{{ articles.map((article) => article.title).join("|") }}</div>',
 });
 
 mockComponent("ArticleToc", {
@@ -77,6 +96,8 @@ function articleDocument(overrides: Record<string, unknown> = {}) {
 describe("article page Studio preview", () => {
   beforeEach(() => {
     queryState.article = articleDocument();
+    queryState.relatedCategories = [];
+    queryState.seriesCandidates = [];
   });
 
   it("renders the refreshed article after Studio replaces async data", async () => {
@@ -123,6 +144,61 @@ describe("article page Studio preview", () => {
     expect(wrapper.get('[aria-label="글 태그"]').text()).toContain("새 태그");
     expect(wrapper.get('[data-testid="seo-preview"]').text()).toContain(
       "수정 후 검색 제목|수정 후 설명|https://www.peterkimzz.com/updated-canonical",
+    );
+  });
+
+  it("stops rendering safely when the refreshed article no longer exists", async () => {
+    const wrapper = await mountSuspended(ArticlePage, {
+      route: "/deleted-article",
+    });
+
+    queryState.article = undefined;
+
+    await useNuxtApp().hooks.callHookParallel("app:data:refresh");
+    await flushPromises();
+    await nextTick();
+
+    expect(wrapper.find('[data-testid="content-body"]').exists()).toBe(false);
+  });
+
+  it("refreshes related and series data after article fields change", async () => {
+    queryState.article = articleDocument({
+      category: "Nuxt",
+      series: { name: "기존 시리즈", order: 1 },
+    });
+    queryState.seriesCandidates = [
+      {
+        path: "/old-series",
+        title: "기존 시리즈 글",
+        series: { name: "기존 시리즈", order: 1 },
+      },
+    ];
+
+    const wrapper = await mountSuspended(ArticlePage, {
+      route: "/dependent-article",
+    });
+
+    queryState.relatedCategories = [];
+    queryState.article = articleDocument({
+      category: "Vue",
+      series: { name: "새 시리즈", order: 1 },
+    });
+    queryState.seriesCandidates = [
+      {
+        path: "/new-series",
+        title: "새 시리즈 글",
+        series: { name: "새 시리즈", order: 1 },
+      },
+    ];
+
+    await useNuxtApp().hooks.callHookParallel("app:data:refresh");
+    await nextTick();
+    await flushPromises();
+    await nextTick();
+
+    expect(queryState.relatedCategories.at(-1)).toBe("Vue");
+    expect(wrapper.get('[data-testid="article-series"]').text()).toBe(
+      "새 시리즈|새 시리즈 글",
     );
   });
 });
