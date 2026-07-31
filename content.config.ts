@@ -1,5 +1,22 @@
 import { defineCollection, defineContentConfig, z } from "@nuxt/content";
 
+const isoDate = (label: string) =>
+  z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .refine((value) => {
+      const date = new Date(`${value}T00:00:00Z`);
+
+      return (
+        !Number.isNaN(date.getTime()) &&
+        date.toISOString().slice(0, 10) === value
+      );
+    }, "올바른 YYYY-MM-DD 날짜를 입력해 주세요.")
+    .editor({
+      label,
+      description: "YYYY-MM-DD 형식으로 입력해 주세요.",
+    });
+
 export default defineContentConfig({
   collections: {
     content: defineCollection({
@@ -18,8 +35,8 @@ export default defineContentConfig({
           .string()
           .optional()
           .editor({ label: "커버 이미지", input: "media" }),
-        created: z.string().date().editor({ label: "작성일" }),
-        updated: z.string().date().editor({ label: "수정일" }),
+        created: isoDate("작성일"),
+        updated: isoDate("수정일"),
         tags: z.array(z.string()).default([]).editor({
           label: "태그",
           description: "검색과 글 분류에 사용합니다.",

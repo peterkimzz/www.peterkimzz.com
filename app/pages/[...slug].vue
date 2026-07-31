@@ -4,6 +4,7 @@ import {
   normalizeTag,
   tagPath,
   toAbsoluteUrl,
+  toSeoDescription,
 } from "~/utils/content";
 
 const route = useRoute();
@@ -58,8 +59,9 @@ const { data: seriesArticles } = await useAsyncData(
 );
 
 const seoTitle = currentArticle.seo?.title || currentArticle.title;
-const seoDescription =
-  currentArticle.seo?.description || currentArticle.description;
+const seoDescription = toSeoDescription(
+  currentArticle.seo?.description || currentArticle.description,
+);
 const seoImage = currentArticle.seo?.image || currentArticle.image;
 const canonicalUrl =
   toAbsoluteUrl(currentArticle.seo?.canonical, runtimeConfig.public.siteUrl) ||

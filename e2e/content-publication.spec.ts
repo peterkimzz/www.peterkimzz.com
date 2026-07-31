@@ -10,29 +10,53 @@ const generatedDescription =
 const missingPath = "/e2e-missing-post/";
 const contentDirectory = path.resolve(process.cwd(), "content");
 
-async function getPostPathsByCategory() {
+function getFrontmatter(source: string, filename: string) {
+  const frontmatter = source.match(/^---\n([\s\S]*?)\n---/)?.[1];
+
+  if (!frontmatter) {
+    throw new Error(`Missing frontmatter in content/${filename}`);
+  }
+
+  return frontmatter;
+}
+
+function getTags(frontmatter: string, filename: string) {
+  const list = frontmatter.match(/^tags:\n((?: {2}- .+(?:\n|$))+)/m)?.[1];
+  const tags = [...(list || "").matchAll(/^ {2}- (.+)$/gm)].map((match) =>
+    match[1].trim(),
+  );
+
+  if (!tags.length) {
+    throw new Error(`Missing tags in content/${filename}`);
+  }
+
+  return tags;
+}
+
+async function getPostPathsByTag() {
   const filenames = (await readdir(contentDirectory)).filter((filename) =>
     filename.endsWith(".md"),
   );
-  const pathsByCategory = new Map<string, string[]>();
+  const pathsByTag = new Map<string, Set<string>>();
 
   for (const filename of filenames) {
     const source = await readFile(
       path.join(contentDirectory, filename),
       "utf8",
     );
-    const category = source.match(/^---\n[\s\S]*?^category:\s*(.+)$/m)?.[1];
+    const tags = getTags(getFrontmatter(source, filename), filename);
+    const articlePath = `/${filename.replace(/\.md$/, "")}`;
 
-    if (!category) {
-      throw new Error(`Missing category in content/${filename}`);
+    for (const tag of tags) {
+      const paths = pathsByTag.get(tag) || new Set<string>();
+      paths.add(articlePath);
+      pathsByTag.set(tag, paths);
     }
-
-    const paths = pathsByCategory.get(category) || [];
-    paths.push(`/${filename.replace(/\.md$/, "")}`);
-    pathsByCategory.set(category, paths);
   }
 
-  return pathsByCategory;
+  return new Map(
+    [...pathsByTag].map(([tag, paths]) => [tag, [...paths].sort()]),
+  );
 }
 
 test.describe("committed content publication", () => {
@@ -61,18 +85,35 @@ test.describe("committed content publication", () => {
     const contentDump = gunzipSync(
       Buffer.from(compressedDump, "base64"),
     ).toString();
-    const contentSchema = contentDump.match(
-      /CREATE TABLE IF NOT EXISTS _content_content \([^;]+;/,
-    )?.[0];
+    const contentStatements = JSON.parse(contentDump) as string[];
+    const contentSchema = contentStatements.find((statement) =>
+      statement.startsWith("CREATE TABLE IF NOT EXISTS _content_content"),
+    );
 
     expect(contentDump).toContain(articleTitle);
     expect(contentDump).toContain(generatedDescription);
     expect(contentSchema).toBeTruthy();
     expect(contentSchema).not.toContain("rawbody");
+    expect(contentSchema).toContain('"created" VARCHAR');
+    expect(contentSchema).toContain('"updated" VARCHAR');
+
+    await page.goto(articlePath);
+
+    await expect(
+      page.locator('time[datetime="2020-12-17"]').first(),
+    ).toHaveText("2020년 12월 17일");
+
+    const metaDescription = await page
+      .locator('meta[name="description"]')
+      .getAttribute("content");
+
+    expect(metaDescription).toBeTruthy();
+    expect(metaDescription?.length).toBeLessThanOrEqual(140);
+    expect(metaDescription).toMatch(/\.\.\.$/);
   });
 
-  test("category tags expose every committed post", async ({ page }) => {
-    const expectedPathsByTag = await getPostPathsByCategory();
+  test("tag pages expose every tagged post", async ({ page }) => {
+    const expectedPathsByTag = await getPostPathsByTag();
 
     for (const [tag, expectedPaths] of expectedPathsByTag) {
       await page.goto(`/tags/${tag}`);
@@ -90,7 +131,7 @@ test.describe("committed content publication", () => {
       );
 
       await expect(articleLinks).toHaveCount(expectedPaths.length);
-      expect(actualPaths.sort()).toEqual(expectedPaths.sort());
+      expect(actualPaths.sort()).toEqual(expectedPaths);
     }
   });
 
