@@ -25,26 +25,37 @@ if (!article.value) {
   });
 }
 
-const currentArticle = article.value;
-const tocLinks = computed(() => currentArticle.body?.toc?.links || []);
+const currentArticle = computed(() => article.value);
+const tocLinks = computed(() => currentArticle.value?.body?.toc?.links || []);
 const articleTags = computed(() =>
-  [...new Set((currentArticle.tags || []).map(normalizeTag))].filter(Boolean),
+  [...new Set((currentArticle.value?.tags || []).map(normalizeTag))].filter(
+    Boolean,
+  ),
 );
-const seriesName = currentArticle.series?.name?.trim();
+const currentCategory = computed(() => currentArticle.value?.category);
+const seriesName = computed(() => currentArticle.value?.series?.name?.trim());
 
-const { data: related } = await useAsyncData(`related:${articlePath}`, () => {
-  return queryCollection("content")
-    .where("category", "=", currentArticle.category)
-    .where("path", "<>", articlePath)
-    .order("created", "DESC")
-    .select("path", "title", "description", "created", "category")
-    .all();
-});
+const { data: related } = await useAsyncData(
+  `related:${articlePath}`,
+  async () => {
+    if (!currentCategory.value) {
+      return [];
+    }
+
+    return queryCollection("content")
+      .where("category", "=", currentCategory.value)
+      .where("path", "<>", articlePath)
+      .order("created", "DESC")
+      .select("path", "title", "description", "created", "category")
+      .all();
+  },
+  { watch: [currentCategory] },
+);
 
 const { data: seriesArticles } = await useAsyncData(
-  `series:${seriesName || "none"}`,
+  `series:${articlePath}`,
   async () => {
-    if (!seriesName) {
+    if (!seriesName.value) {
       return [];
     }
 
@@ -53,40 +64,57 @@ const { data: seriesArticles } = await useAsyncData(
       .all();
 
     return candidates.filter(
-      (candidate) => candidate.series?.name?.trim() === seriesName,
+      (candidate) => candidate.series?.name?.trim() === seriesName.value,
     );
   },
+  { watch: [seriesName] },
 );
 
-const seoTitle = currentArticle.seo?.title || currentArticle.title;
-const seoDescription = toSeoDescription(
-  currentArticle.seo?.description || currentArticle.description,
+const seoTitle = computed(
+  () => currentArticle.value?.seo?.title || currentArticle.value?.title,
 );
-const seoImage = currentArticle.seo?.image || currentArticle.image;
-const canonicalUrl =
-  toAbsoluteUrl(currentArticle.seo?.canonical, runtimeConfig.public.siteUrl) ||
-  toAbsoluteUrl(articlePath, runtimeConfig.public.siteUrl) ||
-  runtimeConfig.public.siteUrl;
-const absoluteSeoImage = toAbsoluteUrl(seoImage, runtimeConfig.public.siteUrl);
+const seoDescription = computed(() =>
+  toSeoDescription(
+    currentArticle.value?.seo?.description || currentArticle.value?.description,
+  ),
+);
+const seoImage = computed(
+  () => currentArticle.value?.seo?.image || currentArticle.value?.image,
+);
+const canonicalUrl = computed(
+  () =>
+    toAbsoluteUrl(
+      currentArticle.value?.seo?.canonical,
+      runtimeConfig.public.siteUrl,
+    ) ||
+    toAbsoluteUrl(articlePath, runtimeConfig.public.siteUrl) ||
+    runtimeConfig.public.siteUrl,
+);
+const absoluteSeoImage = computed(() =>
+  toAbsoluteUrl(seoImage.value, runtimeConfig.public.siteUrl),
+);
 
 useSeoMeta({
-  title: seoTitle,
-  description: seoDescription,
-  ogTitle: seoTitle,
-  ogDescription: seoDescription,
-  ogImage: absoluteSeoImage,
-  twitterTitle: seoTitle,
-  twitterDescription: seoDescription,
-  twitterImage: absoluteSeoImage,
+  title: () => seoTitle.value,
+  description: () => seoDescription.value,
+  ogTitle: () => seoTitle.value,
+  ogDescription: () => seoDescription.value,
+  ogImage: () => absoluteSeoImage.value,
+  twitterTitle: () => seoTitle.value,
+  twitterDescription: () => seoDescription.value,
+  twitterImage: () => absoluteSeoImage.value,
 });
 
-useHead({
-  link: [{ rel: "canonical", href: canonicalUrl }],
-});
+useHead(() => ({
+  link: [{ rel: "canonical", href: canonicalUrl.value }],
+}));
 </script>
 
 <template>
-  <div class="mx-auto max-w-6xl px-5 py-10 sm:px-8 lg:py-14">
+  <div
+    v-if="currentArticle"
+    class="mx-auto max-w-6xl px-5 py-10 sm:px-8 lg:py-14"
+  >
     <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_15rem] lg:gap-14">
       <main class="mx-auto w-full max-w-3xl min-w-0 xl:max-w-4xl">
         <header class="text-center">
