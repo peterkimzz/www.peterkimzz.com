@@ -1,9 +1,11 @@
 ---
-category: tech
 title: "[Nuxt 3] 사이드 프로젝트 만들기 - 개발 환경 설정편"
-updated: 2022-03-12
-created: 2022-03-12
+category: tech
+tags:
+  - tech
 image: https://user-images.githubusercontent.com/20244536/158020130-9fbf9873-9bdf-43ca-81a8-45cbe5ac900b.png
+created: 2022-03-12
+updated: 2022-03-12
 ---
 
 저번 [사이드 프로젝트 만들기 - 기획편](/nuxt3-sideproject-1/)의 다음 편입니다. 이번엔 `nuxt3`의 주요 변경사항 일부를 알아보고, 쾌적한 개발 환경을 위해 몇 가지 세팅을 해보도록 하겠습니다.

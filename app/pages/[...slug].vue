@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import {
-  excerptFromRaw,
   normalizeContentPath,
   normalizeTag,
   tagPath,
   toAbsoluteUrl,
+  toSeoDescription,
 } from "~/utils/content";
 
 const route = useRoute();
@@ -34,10 +34,10 @@ const seriesName = currentArticle.series?.name?.trim();
 
 const { data: related } = await useAsyncData(`related:${articlePath}`, () => {
   return queryCollection("content")
-    .where("category", "=", currentArticle.category || "")
+    .where("category", "=", currentArticle.category)
     .where("path", "<>", articlePath)
     .order("created", "DESC")
-    .select("path", "title", "description", "created", "category", "rawbody")
+    .select("path", "title", "description", "created", "category")
     .all();
 });
 
@@ -59,10 +59,9 @@ const { data: seriesArticles } = await useAsyncData(
 );
 
 const seoTitle = currentArticle.seo?.title || currentArticle.title;
-const seoDescription =
-  currentArticle.seo?.description ||
-  currentArticle.description ||
-  excerptFromRaw(currentArticle.rawbody);
+const seoDescription = toSeoDescription(
+  currentArticle.seo?.description || currentArticle.description,
+);
 const seoImage = currentArticle.seo?.image || currentArticle.image;
 const canonicalUrl =
   toAbsoluteUrl(currentArticle.seo?.canonical, runtimeConfig.public.siteUrl) ||
@@ -158,8 +157,8 @@ useHead({
             v-for="item in related"
             :key="item.path"
             :path="item.path"
-            :title="item.title || 'Untitled'"
-            :description="item.description || excerptFromRaw(item.rawbody, 68)"
+            :title="item.title"
+            :description="item.description"
             :created="item.created"
             :category="item.category"
           />

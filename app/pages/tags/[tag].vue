@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { excerptFromRaw, normalizeTag } from "~/utils/content";
+import { normalizeTag } from "~/utils/content";
 
 const route = useRoute();
 const rawTag = Array.isArray(route.params.tag)
@@ -10,15 +10,7 @@ const tag = normalizeTag(rawTag);
 const { data: allArticles } = await useAsyncData(`tag:${tag}`, () =>
   queryCollection("content")
     .order("created", "DESC")
-    .select(
-      "path",
-      "title",
-      "description",
-      "created",
-      "category",
-      "tags",
-      "rawbody",
-    )
+    .select("path", "title", "description", "created", "category", "tags")
     .all(),
 );
 
@@ -61,8 +53,8 @@ useSeoMeta({
         v-for="article in articles"
         :key="article.path"
         :path="article.path"
-        :title="article.title || 'Untitled'"
-        :description="article.description || excerptFromRaw(article.rawbody)"
+        :title="article.title"
+        :description="article.description"
         :created="article.created"
         :category="article.category"
         :tags="article.tags"

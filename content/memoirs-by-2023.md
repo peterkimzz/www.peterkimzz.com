@@ -1,9 +1,11 @@
 ---
-category: retrospective
 title: 2023년 회고
+category: retrospective
+tags:
+  - retrospective
 image: https://user-images.githubusercontent.com/20244536/209142660-ab4f03d8-189b-48d4-8113-3f8e590c84a5.png
-updated: 2023-12-16
 created: 2023-12-16
+updated: 2023-12-16
 ---
 
 올해도 작년과 마찬가지로 블로그 글을 많이 작성하지 못했다. 상반기에 회사에서 새로 시작한 프로젝트가 너무 힘들었기 때문이다. 그래서 그런지 한 해가 너무 빨리 가버린 것 같다.

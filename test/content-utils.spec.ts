@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { normalizeTag, tagPath, toAbsoluteUrl } from "~/utils/content";
+import {
+  normalizeTag,
+  tagPath,
+  toAbsoluteUrl,
+  toSeoDescription,
+} from "~/utils/content";
 
 describe("content tag utilities", () => {
   it("normalizes surrounding whitespace", () => {
@@ -18,5 +23,14 @@ describe("content tag utilities", () => {
       "https://cdn.example.com/a.png",
     );
     expect(toAbsoluteUrl("relative", "not-a-url")).toBeUndefined();
+  });
+
+  it("normalizes and caps SEO descriptions", () => {
+    expect(toSeoDescription("  짧은\n설명  ")).toBe("짧은 설명");
+
+    const description = toSeoDescription("가".repeat(160));
+
+    expect(description).toHaveLength(140);
+    expect(description).toMatch(/\.\.\.$/);
   });
 });
