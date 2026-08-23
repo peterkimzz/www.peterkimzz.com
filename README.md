@@ -32,13 +32,13 @@ Studio. GitHub OAuth is restricted to the moderator email configured through
 - Studio keeps drafts in the current browser until `Finish update`.
 - `Finish update` creates a commit on `main`; Vercel then rebuilds the site,
   and every document committed under `content/` is public.
-- Uploaded images stay in Git under `public/posts/<slug>/`.
-- Opening the media uploader while editing a post creates and selects that
-  post's `public/posts/<slug>/` folder.
-- The image properties panel supports `left`/`center`/`right` alignment,
-  `small`/`medium`/`large`/`full` sizes, alt text, and captions.
-- The Studio slash menu contains blog-specific `Callout`, `PostImage`, and
-  `YouTubeEmbed` blocks.
+- Uploaded media stays in Git under `public/` and uses Nuxt Studio's default
+  media browser and upload behavior.
+- Studio uses its default 10 MB per-file limit and default image, video, and
+  audio type policy.
+- The visual editor uses Nuxt Studio's default commands, image properties, and
+  component discovery. The project-specific `Callout` and `YouTubeEmbed`
+  components remain available when Studio discovers them.
 - Frontmatter forms support tags, series ordering, and SEO overrides. Tags get
   dedicated `/tags/<tag>` pages, series entries get previous/next navigation,
   and authenticated Studio sessions see an SEO preview in each article.

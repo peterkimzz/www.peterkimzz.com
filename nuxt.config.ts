@@ -104,34 +104,6 @@ export default defineNuxtConfig({
     i18n: {
       defaultLocale: "ko",
     },
-    editor: {
-      components: {
-        include: ["Callout", "PostImage", "YouTubeEmbed"],
-        groups: [
-          {
-            label: "블로그 블록",
-            include: ["Callout", "PostImage", "YouTubeEmbed"],
-          },
-        ],
-        ungrouped: "omit",
-      },
-    },
-    git: {
-      commit: {
-        messagePrefix: "content:",
-      },
-    },
-    media: {
-      external: false,
-      maxFileSize: 10 * 1024 * 1024,
-      allowedTypes: [
-        "image/jpeg",
-        "image/png",
-        "image/webp",
-        "image/gif",
-        "image/avif",
-      ],
-    },
   },
   site: {
     url: siteUrl,

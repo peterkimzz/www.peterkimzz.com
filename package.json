@@ -16,7 +16,6 @@
     "lint:fix": "nuxt prepare && eslint . --fix",
     "new:post": "node scripts/new-post.mjs",
     "paste:image": "node scripts/paste-image.mjs",
-    "postinstall": "node scripts/patch-nuxt-studio.mjs",
     "prebuild": "node scripts/prepare-build.mjs",
     "pregenerate": "node scripts/prepare-build.mjs",
     "prepare": "husky",
