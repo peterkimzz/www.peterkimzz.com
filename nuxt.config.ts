@@ -106,11 +106,11 @@ export default defineNuxtConfig({
     },
     editor: {
       components: {
-        include: ["Callout", "PostImage", "YouTubeEmbed"],
+        include: ["Callout", "ImageGrid", "PostImage", "YouTubeEmbed"],
         groups: [
           {
             label: "블로그 블록",
-            include: ["Callout", "PostImage", "YouTubeEmbed"],
+            include: ["Callout", "ImageGrid", "PostImage", "YouTubeEmbed"],
           },
         ],
         ungrouped: "omit",
