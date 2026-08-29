@@ -104,6 +104,9 @@ export default defineNuxtConfig({
     i18n: {
       defaultLocale: "ko",
     },
+    media: {
+      external: false,
+    },
   },
   site: {
     url: siteUrl,
