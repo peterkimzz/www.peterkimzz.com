@@ -2,7 +2,9 @@ import { readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const supportedVersion = "1.7.0";
-const studioRoot = path.resolve("node_modules/nuxt-studio");
+const studioRoot = path.resolve(
+  process.env.NUXT_STUDIO_ROOT || "node_modules/nuxt-studio",
+);
 const packageJsonPath = path.join(studioRoot, "package.json");
 const appDirectory = path.join(studioRoot, "dist/app");
 const imageRouteMarker = "peterkimzz-image-route-fallback";
