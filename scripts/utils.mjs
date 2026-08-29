@@ -127,7 +127,7 @@ export async function copyImageToPost(slug, sourcePath) {
 
 export async function loadTemplate() {
   return readFile(
-    path.join(projectRoot, "content", ".template", "basic.md"),
+    path.join(projectRoot, "scripts", "templates", "basic.md"),
     "utf8",
   );
 }

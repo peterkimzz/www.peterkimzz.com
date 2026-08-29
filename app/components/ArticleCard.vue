@@ -5,6 +5,7 @@ defineProps<{
   description?: string;
   created?: string;
   category?: string;
+  tags?: string[];
 }>();
 </script>
 
@@ -29,6 +30,16 @@ defineProps<{
       <div class="flex flex-1 items-center justify-between gap-1.5 pt-1">
         <ArticleDate :value="created" />
       </div>
+
+      <ul v-if="tags?.length" class="mt-2 flex flex-wrap gap-1.5">
+        <li
+          v-for="tag in tags"
+          :key="tag"
+          class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-500"
+        >
+          #{{ tag }}
+        </li>
+      </ul>
     </NuxtLink>
   </li>
 </template>

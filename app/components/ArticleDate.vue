@@ -12,6 +12,7 @@ const formatted = computed(() => {
     year: "numeric",
     month: "long",
     day: "numeric",
+    timeZone: "UTC",
   }).format(new Date(props.value));
 });
 </script>

@@ -14,7 +14,11 @@ export default defineConfig({
     trace: "on-first-retry",
   },
   webServer: {
-    command: "yarn preview:static",
+    command: "yarn preview:ssr",
+    env: {
+      HOST: "127.0.0.1",
+      PORT: String(port),
+    },
     port,
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,

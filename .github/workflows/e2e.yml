@@ -35,6 +35,9 @@ jobs:
       - name: Run TypeScript check
         run: yarn typecheck
 
+      - name: Run unit tests
+        run: yarn test:unit
+
       - name: Cache Playwright browsers
         uses: actions/cache@v4
         with:
@@ -47,5 +50,9 @@ jobs:
       - name: Run E2E tests
         env:
           CI: true
-          NUXT_PUBLIC_SITE_URL: https://www.peterkimzz.com
+          NUXT_PUBLIC_SITE_URL: http://127.0.0.1:4173
+          STUDIO_GITHUB_CLIENT_ID: test-client
+          STUDIO_GITHUB_CLIENT_SECRET: test-secret
+          STUDIO_GITHUB_MODERATORS: peterkimzz69@gmail.com
+          STUDIO_GITHUB_REDIRECT_URL: http://127.0.0.1:4173/__nuxt_studio/auth/github
         run: yarn test:e2e

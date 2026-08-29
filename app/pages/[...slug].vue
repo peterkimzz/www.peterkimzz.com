@@ -1,7 +1,14 @@
 <script setup lang="ts">
-import { excerptFromRaw, normalizeContentPath } from "~/utils/content";
+import {
+  normalizeContentPath,
+  normalizeTag,
+  tagPath,
+  toAbsoluteUrl,
+  toSeoDescription,
+} from "~/utils/content";
 
 const route = useRoute();
+const runtimeConfig = useRuntimeConfig();
 const articlePath = normalizeContentPath(route.path);
 
 useZoomableImages();
@@ -10,7 +17,7 @@ const { data: article } = await useAsyncData(`article:${articlePath}`, () => {
   return queryCollection("content").path(articlePath).first();
 });
 
-if (!article.value || !article.value.published) {
+if (!article.value) {
   throw createError({
     statusCode: 404,
     statusMessage: "Page not found",
@@ -18,49 +25,142 @@ if (!article.value || !article.value.published) {
   });
 }
 
-const publishedArticle = article.value;
-const tocLinks = computed(() => publishedArticle.body?.toc?.links || []);
+const currentArticle = computed(() => article.value);
+const tocLinks = computed(() => currentArticle.value?.body?.toc?.links || []);
+const articleTags = computed(() =>
+  [...new Set((currentArticle.value?.tags || []).map(normalizeTag))].filter(
+    Boolean,
+  ),
+);
+const currentCategory = computed(() => currentArticle.value?.category);
+const seriesName = computed(() => currentArticle.value?.series?.name?.trim());
 
-const { data: related } = await useAsyncData(`related:${articlePath}`, () => {
-  return queryCollection("content")
-    .where("published", "=", true)
-    .where("category", "=", publishedArticle.category || "")
-    .where("path", "<>", articlePath)
-    .order("created", "DESC")
-    .select("path", "title", "description", "created", "category", "rawbody")
-    .all();
-});
+const { data: related } = await useAsyncData(
+  `related:${articlePath}`,
+  async () => {
+    if (!currentCategory.value) {
+      return [];
+    }
+
+    return queryCollection("content")
+      .where("category", "=", currentCategory.value)
+      .where("path", "<>", articlePath)
+      .order("created", "DESC")
+      .select("path", "title", "description", "created", "category")
+      .all();
+  },
+  { watch: [currentCategory] },
+);
+
+const { data: seriesArticles } = await useAsyncData(
+  `series:${articlePath}`,
+  async () => {
+    if (!seriesName.value) {
+      return [];
+    }
+
+    const candidates = await queryCollection("content")
+      .select("path", "title", "series")
+      .all();
+
+    return candidates.filter(
+      (candidate) => candidate.series?.name?.trim() === seriesName.value,
+    );
+  },
+  { watch: [seriesName] },
+);
+
+const seoTitle = computed(
+  () => currentArticle.value?.seo?.title || currentArticle.value?.title,
+);
+const seoDescription = computed(() =>
+  toSeoDescription(
+    currentArticle.value?.seo?.description || currentArticle.value?.description,
+  ),
+);
+const seoImage = computed(
+  () => currentArticle.value?.seo?.image || currentArticle.value?.image,
+);
+const canonicalUrl = computed(
+  () =>
+    toAbsoluteUrl(
+      currentArticle.value?.seo?.canonical,
+      runtimeConfig.public.siteUrl,
+    ) ||
+    toAbsoluteUrl(articlePath, runtimeConfig.public.siteUrl) ||
+    runtimeConfig.public.siteUrl,
+);
+const absoluteSeoImage = computed(() =>
+  toAbsoluteUrl(seoImage.value, runtimeConfig.public.siteUrl),
+);
 
 useSeoMeta({
-  title: publishedArticle.title,
-  description:
-    publishedArticle.description || excerptFromRaw(publishedArticle.rawbody),
-  ogTitle: publishedArticle.title,
-  ogDescription:
-    publishedArticle.description || excerptFromRaw(publishedArticle.rawbody),
-  ogImage: publishedArticle.image,
+  title: () => seoTitle.value,
+  description: () => seoDescription.value,
+  ogTitle: () => seoTitle.value,
+  ogDescription: () => seoDescription.value,
+  ogImage: () => absoluteSeoImage.value,
+  twitterTitle: () => seoTitle.value,
+  twitterDescription: () => seoDescription.value,
+  twitterImage: () => absoluteSeoImage.value,
 });
+
+useHead(() => ({
+  link: [{ rel: "canonical", href: canonicalUrl.value }],
+}));
 </script>
 
 <template>
-  <div class="mx-auto max-w-6xl px-5 py-10 sm:px-8 lg:py-14">
+  <div
+    v-if="currentArticle"
+    class="mx-auto max-w-6xl px-5 py-10 sm:px-8 lg:py-14"
+  >
     <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_15rem] lg:gap-14">
       <main class="mx-auto w-full max-w-3xl min-w-0 xl:max-w-4xl">
         <header class="text-center">
           <h1
             class="mx-auto max-w-2xl pb-3 text-3xl font-bold leading-tight tracking-[-0.02em] text-gray-950 sm:text-4xl"
           >
-            {{ publishedArticle.title }}
+            {{ currentArticle.title }}
           </h1>
 
           <ArticleDate
-            :value="publishedArticle.created"
+            :value="currentArticle.created"
             class="text-base font-medium text-gray-500 sm:text-lg"
+          />
+
+          <ul
+            v-if="articleTags.length"
+            class="mt-4 flex flex-wrap justify-center gap-2"
+            aria-label="글 태그"
+          >
+            <li v-for="tag in articleTags" :key="tag">
+              <NuxtLink
+                :to="tagPath(tag)"
+                class="rounded-full bg-gray-100 px-3 py-1 text-sm font-semibold text-gray-600 no-underline hover:bg-gray-200 hover:no-underline"
+              >
+                #{{ tag }}
+              </NuxtLink>
+            </li>
+          </ul>
+
+          <ArticleSeoPreview
+            :title="seoTitle"
+            :description="seoDescription"
+            :image="absoluteSeoImage"
+            :canonical="canonicalUrl"
           />
         </header>
 
+        <ArticleSeries
+          v-if="seriesName && seriesArticles?.length"
+          :name="seriesName"
+          :current-path="articlePath"
+          :articles="seriesArticles"
+        />
+
         <ContentRenderer
-          :value="publishedArticle"
+          :value="currentArticle"
           class="article-prose prose mt-10 max-w-none md:prose-lg prose-headings:tracking-tight prose-p:text-gray-700 prose-p:font-medium prose-strong:font-bold prose-blockquote:border-l-4 prose-blockquote:border-gray-200 prose-blockquote:text-gray-600"
         />
 
@@ -85,8 +185,8 @@ useSeoMeta({
             v-for="item in related"
             :key="item.path"
             :path="item.path"
-            :title="item.title || 'Untitled'"
-            :description="item.description || excerptFromRaw(item.rawbody, 68)"
+            :title="item.title"
+            :description="item.description"
             :created="item.created"
             :category="item.category"
           />

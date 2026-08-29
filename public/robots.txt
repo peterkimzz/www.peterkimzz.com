@@ -1,5 +1,7 @@
 User-agent: *
 
 Allow: /
+Disallow: /admin
+Disallow: /__nuxt_studio
 
 Sitemap: https://www.peterkimzz.com/sitemap.xml
