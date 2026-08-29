@@ -104,6 +104,18 @@ export default defineNuxtConfig({
     i18n: {
       defaultLocale: "ko",
     },
+    editor: {
+      components: {
+        include: ["Callout", "PostImage", "YouTubeEmbed"],
+        groups: [
+          {
+            label: "블로그 블록",
+            include: ["Callout", "PostImage", "YouTubeEmbed"],
+          },
+        ],
+        ungrouped: "omit",
+      },
+    },
     media: {
       external: false,
     },
