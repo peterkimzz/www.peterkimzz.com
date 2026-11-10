@@ -2,17 +2,6 @@ import process from "node:process";
 
 const siteUrl =
   process.env.NUXT_PUBLIC_SITE_URL || "https://www.peterkimzz.com";
-const studioModerator = "peterkimzz69@gmail.com";
-
-if (
-  process.env.VERCEL &&
-  process.env.STUDIO_GITHUB_MODERATORS !== studioModerator
-) {
-  throw new Error(
-    `STUDIO_GITHUB_MODERATORS must be set to ${studioModerator} on Vercel.`,
-  );
-}
-
 export default defineNuxtConfig({
   compatibilityDate: "2025-02-20",
   devtools: { enabled: true },
@@ -25,7 +14,6 @@ export default defineNuxtConfig({
     "@nuxt/test-utils",
     "@nuxt/ui",
     "@nuxt/content",
-    "nuxt-studio",
   ],
   css: [
     "@fontsource/pretendard/400.css",
@@ -54,27 +42,6 @@ export default defineNuxtConfig({
         "cache-control": "public, s-maxage=3600, stale-while-revalidate=86400",
       },
     },
-    "/admin": {
-      isr: false,
-      headers: {
-        "cache-control": "private, no-store",
-        "x-robots-tag": "noindex, nofollow, noarchive",
-      },
-    },
-    "/admin/**": {
-      isr: false,
-      headers: {
-        "cache-control": "private, no-store",
-        "x-robots-tag": "noindex, nofollow, noarchive",
-      },
-    },
-    "/__nuxt_studio/**": {
-      isr: false,
-      headers: {
-        "cache-control": "private, no-store",
-        "x-robots-tag": "noindex, nofollow, noarchive",
-      },
-    },
   },
   runtimeConfig: {
     public: {
@@ -91,35 +58,6 @@ export default defineNuxtConfig({
       },
     },
   },
-  studio: {
-    route: "/admin",
-    repository: {
-      provider: "github",
-      owner: "peterkimzz",
-      repo: "www.peterkimzz.com",
-      branch: "main",
-      rootDir: "",
-      private: false,
-    },
-    i18n: {
-      defaultLocale: "ko",
-    },
-    editor: {
-      components: {
-        include: ["Callout", "ImageGrid", "PostImage", "YouTubeEmbed"],
-        groups: [
-          {
-            label: "블로그 블록",
-            include: ["Callout", "ImageGrid", "PostImage", "YouTubeEmbed"],
-          },
-        ],
-        ungrouped: "omit",
-      },
-    },
-    media: {
-      external: false,
-    },
-  },
   site: {
     url: siteUrl,
     name: "peterkimzz",
@@ -130,11 +68,8 @@ export default defineNuxtConfig({
       "/200",
       "/404",
       "/_payload.json",
-      "/admin",
-      "/admin/**",
       "/api/__sitemap__/**",
       "/__nuxt_content/**",
-      "/__nuxt_studio/**",
     ],
   },
 });

@@ -44,7 +44,7 @@ function listField(frontmatter: string, field: string) {
 }
 
 describe("content frontmatter", () => {
-  it("keeps every post compatible with the Studio collection schema", async () => {
+  it("keeps every post compatible with the collection schema", async () => {
     const filenames = (await readdir(contentDirectory))
       .filter((filename) => filename.endsWith(".md"))
       .sort();

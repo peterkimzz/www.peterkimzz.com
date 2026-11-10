@@ -143,13 +143,6 @@ useHead(() => ({
               </NuxtLink>
             </li>
           </ul>
-
-          <ArticleSeoPreview
-            :title="seoTitle"
-            :description="seoDescription"
-            :image="absoluteSeoImage"
-            :canonical="canonicalUrl"
-          />
         </header>
 
         <ArticleSeries

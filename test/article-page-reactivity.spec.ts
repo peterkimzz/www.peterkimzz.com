@@ -49,12 +49,6 @@ mockComponent("ArticleDate", {
   template: '<time data-testid="article-date">{{ value }}</time>',
 });
 
-mockComponent("ArticleSeoPreview", {
-  props: ["title", "description", "image", "canonical"],
-  template:
-    '<div data-testid="seo-preview">{{ title }}|{{ description }}|{{ canonical }}</div>',
-});
-
 mockComponent("ArticleSeries", {
   props: ["name", "articles"],
   template:
@@ -93,14 +87,14 @@ function articleDocument(overrides: Record<string, unknown> = {}) {
   };
 }
 
-describe("article page Studio preview", () => {
+describe("article page data refresh", () => {
   beforeEach(() => {
     queryState.article = articleDocument();
     queryState.relatedCategories = [];
     queryState.seriesCandidates = [];
   });
 
-  it("renders the refreshed article after Studio replaces async data", async () => {
+  it("renders the refreshed article after async data is replaced", async () => {
     const wrapper = await mountSuspended(ArticlePage, {
       route: "/github-pages-nuxtjs",
     });
@@ -142,9 +136,6 @@ describe("article page Studio preview", () => {
       "수정 후 목차",
     );
     expect(wrapper.get('[aria-label="글 태그"]').text()).toContain("새 태그");
-    expect(wrapper.get('[data-testid="seo-preview"]').text()).toContain(
-      "수정 후 검색 제목|수정 후 설명|https://www.peterkimzz.com/updated-canonical",
-    );
   });
 
   it("stops rendering safely when the refreshed article no longer exists", async () => {
