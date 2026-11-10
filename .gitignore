@@ -31,3 +31,6 @@ pnpm-lock.yaml
 # Obsidian: 공유 설정(app.json)만 커밋하고 나머지는 로컬에 둔다
 content/.obsidian/*
 !content/.obsidian/app.json
+
+# wrangler dev 로컬 상태
+.wrangler
