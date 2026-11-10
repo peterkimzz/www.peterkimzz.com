@@ -30,6 +30,15 @@ export function toSeoDescription(value?: string, limit = 140) {
   );
 }
 
+// Obsidian 은 vault 기준 경로(posts/a.png)로 이미지를 넣는다. 사이트 경로(/posts/a.png)로 맞춘다.
+export function toPublicSrc(src?: string) {
+  if (!src || /^(\/|[a-z][a-z0-9+.-]*:)/i.test(src)) {
+    return src;
+  }
+
+  return `/${src}`;
+}
+
 export function toAbsoluteUrl(value: string | undefined, baseUrl: string) {
   if (!value?.trim()) {
     return undefined;
