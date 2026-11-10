@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { toPublicSrc } from "~/utils/content";
+
 const props = defineProps<{
   src?: string;
   alt?: string;
@@ -12,7 +14,7 @@ const props = defineProps<{
 
 <template>
   <PostImage
-    :src="props.src"
+    :src="toPublicSrc(props.src)"
     :alt="props.alt"
     :title="props.title"
     :width="props.width"

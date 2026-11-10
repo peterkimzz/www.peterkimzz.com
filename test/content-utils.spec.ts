@@ -3,6 +3,7 @@ import {
   normalizeTag,
   tagPath,
   toAbsoluteUrl,
+  toPublicSrc,
   toSeoDescription,
 } from "~/utils/content";
 
@@ -23,6 +24,20 @@ describe("content tag utilities", () => {
       "https://cdn.example.com/a.png",
     );
     expect(toAbsoluteUrl("relative", "not-a-url")).toBeUndefined();
+  });
+
+  it("roots vault-relative image paths and leaves the rest alone", () => {
+    expect(toPublicSrc("posts/Pasted%20image.png")).toBe(
+      "/posts/Pasted%20image.png",
+    );
+    expect(toPublicSrc("/posts/a.png")).toBe("/posts/a.png");
+    expect(toPublicSrc("https://cdn.example.com/a.png")).toBe(
+      "https://cdn.example.com/a.png",
+    );
+    expect(toPublicSrc("data:image/png;base64,AA")).toBe(
+      "data:image/png;base64,AA",
+    );
+    expect(toPublicSrc(undefined)).toBeUndefined();
   });
 
   it("normalizes and caps SEO descriptions", () => {

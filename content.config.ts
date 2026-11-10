@@ -21,7 +21,11 @@ export default defineContentConfig({
   collections: {
     content: defineCollection({
       type: "page",
-      source: "**/*.md",
+      // content/drafts/ 는 dev 에서만 보이고 프로덕션 빌드에서는 빠진다.
+      source: {
+        include: "**/*.md",
+        exclude: process.env.NODE_ENV === "production" ? ["drafts/**"] : [],
+      },
       schema: z.object({
         title: z.string().trim().min(1).editor({ label: "제목" }),
         description: z

@@ -23,6 +23,19 @@ yarn generate
 
 ## Writing Workflow
 
+### Obsidian (권장)
+
+Obsidian에서 `content/` 폴더를 vault로 연다. 공유 설정은
+`content/.obsidian/app.json`에 커밋되어 있다.
+
+- 이미지를 붙여넣으면 `public/posts/`에 저장된다 (`content/posts`는 그 폴더를
+  가리키는 심볼릭 링크). 링크는 `posts/파일명` 형태로 들어가고 렌더링할 때
+  `/posts/파일명`으로 바뀐다.
+- `content/drafts/` 안의 글은 `yarn dev`에서만 보이고 프로덕션 빌드에서
+  빠진다. 발행할 때 파일을 `content/` 바로 아래로 옮긴다. 저장소가 공개라
+  커밋한 초안은 GitHub에서는 보인다.
+- 새 글의 frontmatter는 `yarn new:post <slug>`로 만든다.
+
 ### Browser editor
 
 Production content is edited at `https://www.peterkimzz.com/admin` with Nuxt
