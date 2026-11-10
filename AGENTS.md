@@ -12,15 +12,15 @@ This file defines the default working rules for agents operating in this reposit
 
 ## Verification Baseline
 
-- Pre-commit hook runs `yarn lint-staged`.
-- Pre-push hook runs `yarn typecheck`.
-- CI runs `yarn lint`, `yarn format:check`, `yarn typecheck`, and Playwright E2E.
+- Pre-commit hook runs `bun run lint-staged`.
+- Pre-push hook runs `bun run typecheck`.
+- CI runs `bun run lint`, `bun run format:check`, `bun run typecheck`, and Playwright E2E.
 
 ## Common Commands
 
-- `yarn lint`
-- `yarn format:check`
-- `yarn typecheck`
-- `yarn test:e2e`
+- `bun run lint`
+- `bun run format:check`
+- `bun run typecheck`
+- `bun run test:e2e`
 
 Prefer the smallest command set that still validates the change you made.

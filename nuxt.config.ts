@@ -33,14 +33,8 @@ export default defineNuxtConfig({
   nitro: {
     prerender: {
       failOnError: true,
-    },
-  },
-  routeRules: {
-    "/": { prerender: true },
-    "/**": {
-      headers: {
-        "cache-control": "public, s-maxage=3600, stale-while-revalidate=86400",
-      },
+      // /foo 를 foo.html 로 만든다. Cloudflare Pages 가 /foo -> /foo/ 리다이렉트를 하지 않게 한다.
+      autoSubfolderIndex: false,
     },
   },
   runtimeConfig: {

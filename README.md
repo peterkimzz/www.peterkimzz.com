@@ -9,15 +9,16 @@ Agent rules: [`AGENTS.md`](./AGENTS.md)
 - `Nuxt 4`
 - `@nuxt/content v3`
 - `Nuxt UI`
-- `Vercel` (SSR target)
-- `GitHub Actions`
+- `Bun` (package manager and runtime)
+- `Cloudflare Pages` (static hosting)
+- `GitHub Actions` (CI)
 
 ## Development
 
 ```bash
-yarn install
-yarn dev
-yarn generate
+bun install
+bun run dev
+bun run generate
 ```
 
 ## Writing Workflow
@@ -33,10 +34,10 @@ Obsidian에서 `content/` 폴더를 vault로 연다. 공유 설정은
 - 이미지는 실제로 `public/posts/`에 저장된다 (`content/posts`는 그 폴더를
   가리키는 심볼릭 링크). 링크는 `posts/…` 형태로 들어가고 렌더링할 때
   `/posts/…`로 바뀐다.
-- `content/drafts/` 안의 글은 `yarn dev`에서만 보이고 프로덕션 빌드에서
+- `content/drafts/` 안의 글은 `bun run dev`에서만 보이고 프로덕션 빌드에서
   빠진다. 발행할 때 파일을 `content/` 바로 아래로 옮긴다. 저장소가 공개라
   커밋한 초안은 GitHub에서는 보인다.
-- 새 글의 frontmatter는 `yarn new:post <slug>`로 만든다.
+- 새 글의 frontmatter는 `bun run new:post <slug>`로 만든다.
 
 ### Frontmatter
 
@@ -65,15 +66,15 @@ Content block examples:
 Posts stay in `content/*.md`, and post images live in `public/posts/<slug>/`.
 
 ```bash
-yarn new:post my-post
-yarn paste:image my-post
-yarn add:image my-post ~/Desktop/foo.png
+bun run new:post my-post
+bun run paste:image my-post
+bun run add:image my-post ~/Desktop/foo.png
 ```
 
-- `yarn new:post <slug>` creates a markdown file from
+- `bun run new:post <slug>` creates a markdown file from
   `scripts/templates/basic.md`
-- `yarn add:image <slug> <file...>` copies local image files into `public/posts/<slug>/` and prints markdown image links
-- `yarn paste:image <slug>` saves the current clipboard image into `public/posts/<slug>/` using `pngpaste` when available, then prints the markdown image link
+- `bun run add:image <slug> <file...>` copies local image files into `public/posts/<slug>/` and prints markdown image links
+- `bun run paste:image <slug>` saves the current clipboard image into `public/posts/<slug>/` using `pngpaste` when available, then prints the markdown image link
 - generated local image paths look like `/posts/<slug>/<filename>`
 - external image URLs are still supported when you want to use them manually
 
@@ -85,14 +86,13 @@ NUXT_PUBLIC_SITE_URL=https://www.peterkimzz.com
 
 ## Deployment
 
-- `yarn build` creates the SSR/hybrid output used by Vercel.
-- `yarn generate` remains available for the static regression test suite.
-- Vercel Git integration deploys `main` to production and other branches as
-  previews.
-- Public pages use Vercel ISR.
+The site is fully static. `bun run generate` writes it to `.output/public`.
 
-### GitHub Pages migration safety
+Cloudflare Pages builds and deploys every push to `main` through its Git
+integration:
 
-The GitHub Pages workflow and `public/CNAME` intentionally remain in place until
-the Vercel deployment, custom domains, and TLS have all been
-verified. Remove them and disable GitHub Pages only after that cutover succeeds.
+- Build command: `bun run generate`
+- Build output directory: `dist`
+- Environment variable: `NUXT_PUBLIC_SITE_URL=https://www.peterkimzz.com`
+
+`bunfig.toml` makes every `bun run` script use the Bun runtime instead of Node.

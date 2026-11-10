@@ -33,7 +33,7 @@ async function main() {
 
   if (saveResult.error?.code === "ENOENT") {
     throw new Error(
-      "pngpaste is not installed. Install it with `brew install pngpaste`, or use `yarn add:image <slug> <file...>` instead.",
+      "pngpaste is not installed. Install it with `brew install pngpaste`, or use `bun run add:image <slug> <file...>` instead.",
     );
   }
 
@@ -42,7 +42,7 @@ async function main() {
       (saveResult.stderr || "").trim() ||
       "Clipboard does not contain an image.";
     throw new Error(
-      `${message} Use \`yarn add:image ${slug} <file...>\` instead if you want to import a local file.`,
+      `${message} Use \`bun run add:image ${slug} <file...>\` instead if you want to import a local file.`,
     );
   }
 

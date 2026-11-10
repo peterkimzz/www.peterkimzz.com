@@ -14,7 +14,7 @@ export default defineConfig({
     trace: "on-first-retry",
   },
   webServer: {
-    command: "yarn preview:ssr",
+    command: "bun run preview:static",
     env: {
       HOST: "127.0.0.1",
       PORT: String(port),

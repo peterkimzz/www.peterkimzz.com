@@ -41,7 +41,7 @@ async function main() {
       "",
       "Next steps:",
       `1. Open content/${slug}.md`,
-      `2. Run yarn paste:image ${slug} or yarn add:image ${slug} <file...>`,
+      `2. Run bun run paste:image ${slug} or bun run add:image ${slug} <file...>`,
     ].join("\n"),
   );
 }
