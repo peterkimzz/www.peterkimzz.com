@@ -31,6 +31,8 @@ export default defineNuxtConfig({
     fonts: false,
   },
   nitro: {
+    // 항상 정적 파일만 만든다. 빌드 환경(Cloudflare 등)을 감지해 서버용 출력으로 바뀌는 것을 막는다.
+    preset: "static",
     prerender: {
       failOnError: true,
       // /foo 를 foo.html 로 만든다. Cloudflare Pages 가 /foo -> /foo/ 리다이렉트를 하지 않게 한다.

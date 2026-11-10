@@ -1,0 +1,10 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "www-peterkimzz-com",
+  "compatibility_date": "2026-11-10",
+  // 정적 파일만 올린다. Worker 스크립트는 없다.
+  "assets": {
+    "directory": "./.output/public",
+    "not_found_handling": "404-page",
+  },
+}

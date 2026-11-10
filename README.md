@@ -10,7 +10,7 @@ Agent rules: [`AGENTS.md`](./AGENTS.md)
 - `@nuxt/content v3`
 - `Nuxt UI`
 - `Bun` (package manager and runtime)
-- `Cloudflare Pages` (static hosting)
+- `Cloudflare Workers` static assets (hosting)
 - `GitHub Actions` (CI)
 
 ## Development
@@ -88,11 +88,12 @@ NUXT_PUBLIC_SITE_URL=https://www.peterkimzz.com
 
 The site is fully static. `bun run generate` writes it to `.output/public`.
 
-Cloudflare Pages builds and deploys every push to `main` through its Git
-integration:
+Cloudflare Workers Builds deploys every push to `main` (Git integration on the
+`www-peterkimzz-com` Worker). `wrangler.jsonc` uploads `.output/public` as
+static assets; there is no Worker script.
 
 - Build command: `bun run generate`
-- Build output directory: `dist`
-- Environment variable: `NUXT_PUBLIC_SITE_URL=https://www.peterkimzz.com`
+- Deploy command: `npx wrangler deploy`
+- Build variable: `NUXT_PUBLIC_SITE_URL=https://www.peterkimzz.com`
 
 `bunfig.toml` makes every `bun run` script use the Bun runtime instead of Node.
